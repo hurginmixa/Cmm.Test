@@ -2,6 +2,8 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 
+namespace CMM.Test.GUI.Tools;
+
 public class RangeObservableCollection<T> : ObservableCollection<T>
 {
     private bool _suppressNotification = false;

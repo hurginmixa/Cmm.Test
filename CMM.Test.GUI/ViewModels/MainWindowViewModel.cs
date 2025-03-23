@@ -1,12 +1,8 @@
 ﻿using CMM.Test.GUI.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using CMM.Test.GUI.Models;
+using CMM.Test.GUI.Tools;
 
 namespace CMM.Test.GUI.ViewModels
 {
