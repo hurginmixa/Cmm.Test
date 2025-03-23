@@ -20,9 +20,15 @@ namespace CMM.Test.GUI.ViewModels
             string basePath = @"\\mixa7th\c$\Falcon\ScanResults";
             SelectedFolderModel selectedFolderModel = new SelectedFolderModel();
 
-            var dialog = new SelectFolderView(basePath, selectedFolderModel);
-            dialog.Owner = (Window) o;
-            dialog.ShowDialog();
+            bool result = true;
+
+            while (result)
+            {
+                var dialog = new SelectFolderView(basePath, selectedFolderModel);
+                dialog.Owner = (Window) o;
+
+                result = dialog.ShowDialog() ?? false;
+            }
         }
     }
 }
