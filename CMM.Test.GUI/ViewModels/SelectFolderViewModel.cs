@@ -4,7 +4,10 @@ using System.IO;
 using System.Linq;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using CMM.Test.GUI.Models;
+using CMM.Test.GUI.Tools;
+using System.Windows.Input;
 
 public class SelectFolderViewModel : INotifyPropertyChanged
 {
@@ -14,10 +17,15 @@ public class SelectFolderViewModel : INotifyPropertyChanged
     private string _selectedWafer = string.Empty;
 
     private readonly string _basePath;
+    private readonly SelectedFolderModel _model;
+
+    public ICommand OkCommand { get; }
+    public ICommand CancelCommand { get; }
 
     public SelectFolderViewModel(string basePath, SelectedFolderModel model)
     {
         _basePath = basePath;
+        _model = model;
 
         LoadJobs();
 
@@ -31,17 +39,36 @@ public class SelectFolderViewModel : INotifyPropertyChanged
             return;
         }
 
-        SelectedJob = !string.IsNullOrEmpty(model.Job) && Jobs.Contains(model.Job) ? model.Job : Jobs.First();
+        SelectedJob = !string.IsNullOrEmpty(_model.Job) && Jobs.Contains(_model.Job) ? _model.Job : Jobs.First();
 
-        SelectedSetup = !string.IsNullOrEmpty(model.Setup) && Setups.Contains(model.Setup)
-            ? model.Setup
-            : Setups.First();
+        SelectedSetup = !string.IsNullOrEmpty(_model.Setup) && Setups.Contains(_model.Setup) ? _model.Setup : Setups.First();
 
-        SelectedLot = !string.IsNullOrEmpty(model.Lot) && Lots.Contains(model.Lot) ? model.Lot : Lots.First();
+        SelectedLot = !string.IsNullOrEmpty(_model.Lot) && Lots.Contains(_model.Lot) ? _model.Lot : Lots.First();
 
-        SelectedWafer = !string.IsNullOrEmpty(model.WaferId) && Wafers.Contains(model.WaferId)
-            ? model.WaferId
-            : Wafers.First();
+        SelectedWafer = !string.IsNullOrEmpty(_model.WaferId) && Wafers.Contains(_model.WaferId) ? _model.WaferId : Wafers.First();
+
+        OkCommand = new RelayCommand(o =>
+        {
+            if (o is Window window)
+            {
+                _model.Job = SelectedJob;
+                _model.Setup = SelectedSetup;
+                _model.Lot = SelectedLot;
+                _model.WaferId = SelectedWafer;
+
+                window.DialogResult = true;
+                window.Close();
+            }
+        });
+        
+        CancelCommand = new RelayCommand(o =>
+        {
+            if (o is Window window)
+            {
+                window.DialogResult = false;
+                window.Close();
+            }
+        });
     }
 
     public RangeObservableCollection<string> Jobs { get; private set; } = new RangeObservableCollection<string>();

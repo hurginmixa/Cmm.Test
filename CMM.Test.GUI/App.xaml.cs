@@ -17,13 +17,13 @@ namespace CMM.Test.GUI
             base.OnStartup(e);
 
             //
-            string basePath = @"\\mixa7th\c$\Falcon\ScanResults";
-            SelectedFolderModel selectedFolderModel = new SelectedFolderModel();
+            //string basePath = @"\\mixa7th\c$\Falcon\ScanResults";
+            //SelectedFolderModel selectedFolderModel = new SelectedFolderModel();
 
-            var window = new SelectFolderView(basePath, selectedFolderModel);
+            //var window = new SelectFolderView(basePath, selectedFolderModel);
 
             //
-            //var window = new MainWindow();
+            var window = new MainWindow();
             
             window.Show();
 
