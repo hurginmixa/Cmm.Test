@@ -137,11 +137,8 @@ public class SelectFolderViewModel : INotifyPropertyChanged
                 return;
             }
 
-            if (_selectedWafer != value)
-            {
-                _selectedWafer = value;
-                OnPropertyChanged();
-            }
+            _selectedWafer = value;
+            OnPropertyChanged();
         }
     }
 
