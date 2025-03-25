@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -29,11 +29,15 @@ internal class CreatingTabViewModel : INotifyPropertyChanged
         LoadResMapCommand = new RelayCommand(o => LoadResult(o));
 
         CheckResultCommand = new RelayCommand(o => OpenCheckResultDialog(o));
+        
+        CreateCommand = new RelayCommand(o => Create(o), () => CanCreate);
     }
 
     public ICommand LoadResMapCommand { get; }
 
     public ICommand CheckResultCommand { get; }
+    
+    public ICommand CreateCommand { get; }
 
     public string JobName
     {
@@ -65,6 +69,8 @@ internal class CreatingTabViewModel : INotifyPropertyChanged
         set => SetField(ref _resultPath, value);
     }
 
+    public bool CanCreate => true;
+
     private void LoadResult(object o)
     {
     }
@@ -89,6 +95,12 @@ internal class CreatingTabViewModel : INotifyPropertyChanged
             WaferId = selectedFolderModel.WaferId;
             ResultPath = selectedFolderModel.ResultPath;
         }
+    }
+
+    private void Create(object o)
+    {
+        // TODO: Implement creation logic
+        MessageBox.Show("Create command executed!");
     }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
