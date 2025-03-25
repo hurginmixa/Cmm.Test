@@ -5,13 +5,186 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CMM.Test.GUI.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        SizeToContent="WidthAndHeight"
+        Title="MainWindow">
+    <StackPanel Orientation="Vertical" Margin="5">
+        <TabControl x:Name="DynamicTabControl" Margin="10" Height="600" Width="550" >
+            <TabControl.Resources>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                </Style>
+            </TabControl.Resources>
+
+            <TabItem Header="Creating Map" DataContext="{Binding CreatingTabViewModel}">
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="Job Name" Width="80" />
+                        <TextBox Text="{Binding JobName}" Width="300"  IsReadOnly="True"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="Setup Name" Width="80" />
+                        <TextBox Text="{Binding SetupName}" Width="300" IsReadOnly="True" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="Lot" Width="80" />
+                        <TextBox Text="{Binding LotName}" Width="300" IsReadOnly="True" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="Wafer Id" Width="80" />
+                        <TextBox Text="{Binding WaferId}" Width="300" IsReadOnly="True" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="Result Path" Width="80" />
+                        <TextBox Text="{Binding ResultPath}" Width="400" IsReadOnly="True" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Content="Load Res Map" Margin="0,0,10,0" Command="{Binding LoadResMapCommand}" Padding="15,2" />
+                        <Button Content="Check Result" Margin="0,0,10,0" Command="{Binding CheckResultCommand}"  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Padding="15,2" />
+                        <Button Content="Import Result" Command="{Binding ImportResultCommand}" Padding="15,2" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <CheckBox Content="Not Show Map" IsChecked="{Binding NotShowMap}" Margin="0,0,20,0"/>
+                        <CheckBox Content="Import After Create" IsChecked="{Binding ImportAfterCreate}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,20">
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+                            <TextBlock Text="Destination for :" FontWeight="Bold" FontSize="15"/>
+                            <ListBox ItemsSource="{Binding ConverterList}" SelectedItem="{Binding SelectedConverter}" Height="100" Width="300"/>
+                            <TextBlock Text="Search Converter"/>
+                            <TextBox Text="{Binding SearchText}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <CheckBox Content="Create On Internal Bins" IsChecked="{Binding CreateOnInternalBins}" Margin="0,0,0,5"/>
+                            <CheckBox Content="Assume AutoCycle" IsChecked="{Binding AssumeAutoCycle}" Margin="0,0,0,5"/>
+                            <CheckBox Content="Assume Verification" IsChecked="{Binding AssumeVerification}" Margin="0,0,0,5"/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Export flat position" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <ComboBox Width="100" ItemsSource="{Binding ExportPositions}" SelectedItem="{Binding SelectedExportPosition}"/>
+                            </StackPanel>
+
+                            <Button Content="RTP" Command="{Binding RTPCommand}" Width="80" HorizontalAlignment="Left" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBox Text="{Binding Notes}" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="100" Margin="0,0,0,10" />
+
+                    <Button Content="Create . . ." IsEnabled="{Binding CanCreate}" Height="30" Margin="0,0,0,0" Width="220" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Import-Update">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Mask & Sub Map -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <StackPanel Margin="0,0,20,0">
+                            <TextBlock Text="Mask"/>
+                            <TextBox Width="150" Text="{Binding WaferMapMask}" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Text="Sub Map"/>
+                            <TextBox Width="150" Text="{Binding SubmapId}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Converter List -->
+                    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,0,0,10">
+                        <TextBlock Text="Selected Converter"/>
+                        <ListBox ItemsSource="{Binding ConverterList}" SelectedItem="{Binding SelectedConverter}" Height="80" Margin="0,0,0,5"/>
+                    </StackPanel>
+
+                    <!-- Import Kind -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="Import Kind" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ComboBox Width="150" ItemsSource="{Binding ImportKinds}" SelectedItem="{Binding SelectedImportKind}" />
+                    </StackPanel>
+
+                    <!-- Load / View Map File -->
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,5">
+                        <Button Content="Load" Width="80" Command="{Binding LoadCommand}" Margin="0,0,5,0"/>
+                        <Button Content="View Map File" Width="120" Command="{Binding ViewMapCommand}" />
+                    </StackPanel>
+
+                    <!-- File Name & File Format -->
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,5">
+                        <StackPanel Margin="0,0,20,0">
+                            <TextBlock Text="File Name"/>
+                            <TextBox Text="{Binding FileName}" Width="150"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="File Format"/>
+                            <TextBox Text="{Binding FileFormat}" Width="150"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Result Path + Use Result Path -->
+                    <StackPanel Grid.Row="5" Margin="0,0,0,5">
+                        <TextBlock Text="Result Path"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                            <CheckBox Content="Using" Margin="10,0" IsChecked="{Binding UseResultPath}" />
+                            <TextBox Text="{Binding ResultPath}" Width="300"/>
+                            <Button Content="Set" Width="50" Margin="10,0" Command="{Binding SetResultPathCommand}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Yield + Checkboxes -->
+                    <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="0,0,0,5">
+                        <StackPanel>
+                            <TextBlock Text="Yield"/>
+                            <Border Width="150" Height="70" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <TextBlock Text="Bin" Width="50"/>
+                                        <TextBox Text="{Binding ResultPath}" Width="50"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <TextBlock Text="%" Width="50" />
+                                        <TextBox Text="{Binding ResultPath}" Width="50"/>
+                                    </StackPanel>
+
+                                    <Button Content="Decrease Yield" Margin="0,0" Command="{Binding SetResultPathCommand}" HorizontalAlignment="Left" Padding="5"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Margin="20,0,0,0">
+                            <CheckBox Content="In Verification" IsChecked="{Binding InVerification}" Margin="0,5"/>
+                            <CheckBox Content="Not Show Ma" IsChecked="{Binding NotShowMa}" Margin="0,5"/>
+                            <Button Content="Stresse Test" Width="100" Command="{Binding StressTestCommand}" />
+                        </StackPanel>
+                    </StackPanel>
+
+
+                    <!-- Update Button -->
+                    <Button Grid.Row="7" Content="Update . . ." Height="30" FontWeight="Bold" Width="220" HorizontalAlignment="Left"  IsEnabled="{Binding CanUpdate}" Margin="0,5,0,5" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+
         <Button Content="Open Dialog"
                 Width="120"
-                Height="40"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Command="{Binding OpenDialogCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
-    </Grid>
+                Height="27"
+                HorizontalAlignment="Center" />
+    </StackPanel>
 </Window>

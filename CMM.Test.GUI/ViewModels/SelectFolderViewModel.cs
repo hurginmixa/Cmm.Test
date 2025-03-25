@@ -55,6 +55,7 @@ public class SelectFolderViewModel : INotifyPropertyChanged
                 _model.Setup = SelectedSetup;
                 _model.Lot = SelectedLot;
                 _model.WaferId = SelectedWafer;
+                _model.ResultPath = GetFullPath();
 
                 window.DialogResult = true;
                 window.Close();

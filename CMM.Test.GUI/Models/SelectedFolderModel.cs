@@ -9,5 +9,7 @@
         public string Lot { get; set; } = string.Empty;
 
         public string WaferId { get; set; } = string.Empty;
+
+        public string ResultPath { get; set; } = string.Empty;
     }
 }
