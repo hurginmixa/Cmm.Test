@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using CMM.Test.GUI.Models;
 using CMM.Test.GUI.Tools;
-using System.Windows.Input;
+
+namespace CMM.Test.GUI.ViewModels;
 
 public class SelectFolderViewModel : INotifyPropertyChanged
 {

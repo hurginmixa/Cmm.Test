@@ -1,4 +1,4 @@
-﻿<Window x:Class="CMM.Test.GUI.Views.MainWindow"
+<Window x:Class="CMM.Test.GUI.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -78,25 +78,26 @@
 
                     <TextBox Text="{Binding Notes}" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="100" Margin="0,0,0,10" />
 
-                    <Button Content="Create . . ." IsEnabled="{Binding CanCreate}" Height="30" Margin="0,0,0,0" Width="220" HorizontalAlignment="Left"/>
+                    <Button Content="Create . . ." Name="CreateButton" Command="{Binding CreateCommand}" IsEnabled="{Binding CanCreate}" Height="30" Margin="0,0,0,0" Width="220" HorizontalAlignment="Left"/>
                 </StackPanel>
             </TabItem>
 
-            <TabItem Header="Import-Update">
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <TabItem Header="Import-Update" DataContext="{Binding ImportUpdateViewModel}">
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <!-- LotId -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="LotId" VerticalAlignment="Center" Margin="0,0,5,0" Width="50" FontWeight="Bold"/>
+                        <TextBox Text="{Binding LotId}" Width="200"/>
+                    </StackPanel>
+                    
+                    <!-- WaferId -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="WaferId" VerticalAlignment="Center" Margin="0,0,5,0" Width="50" FontWeight="Bold"/>
+                        <TextBox Text="{Binding WaferId}" Width="200"/>
+                    </StackPanel>
 
                     <!-- Mask & Sub Map -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <StackPanel Margin="0,0,20,0">
                             <TextBlock Text="Mask"/>
                             <TextBox Width="150" Text="{Binding WaferMapMask}" />
@@ -109,25 +110,25 @@
                     </StackPanel>
 
                     <!-- Converter List -->
-                    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,0,0,10">
+                    <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                         <TextBlock Text="Selected Converter"/>
                         <ListBox ItemsSource="{Binding ConverterList}" SelectedItem="{Binding SelectedConverter}" Height="80" Margin="0,0,0,5"/>
                     </StackPanel>
 
                     <!-- Import Kind -->
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Import Kind" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <ComboBox Width="150" ItemsSource="{Binding ImportKinds}" SelectedItem="{Binding SelectedImportKind}" />
                     </StackPanel>
 
                     <!-- Load / View Map File -->
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,5">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                         <Button Content="Load" Width="80" Command="{Binding LoadCommand}" Margin="0,0,5,0"/>
                         <Button Content="View Map File" Width="120" Command="{Binding ViewMapCommand}" />
                     </StackPanel>
 
                     <!-- File Name & File Format -->
-                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,5">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                         <StackPanel Margin="0,0,20,0">
                             <TextBlock Text="File Name"/>
                             <TextBox Text="{Binding FileName}" Width="150"/>
@@ -139,7 +140,7 @@
                     </StackPanel>
 
                     <!-- Result Path + Use Result Path -->
-                    <StackPanel Grid.Row="5" Margin="0,0,0,5">
+                    <StackPanel Margin="0,0,0,5">
                         <TextBlock Text="Result Path"/>
                         <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                             <CheckBox Content="Using" Margin="10,0" IsChecked="{Binding UseResultPath}" />
@@ -149,7 +150,7 @@
                     </StackPanel>
 
                     <!-- Yield + Checkboxes -->
-                    <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="0,0,0,5">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                         <StackPanel>
                             <TextBlock Text="Yield"/>
                             <Border Width="150" Height="70" BorderBrush="Black" BorderThickness="1">
@@ -175,10 +176,9 @@
                         </StackPanel>
                     </StackPanel>
 
-
                     <!-- Update Button -->
-                    <Button Grid.Row="7" Content="Update . . ." Height="30" FontWeight="Bold" Width="220" HorizontalAlignment="Left"  IsEnabled="{Binding CanUpdate}" Margin="0,5,0,5" />
-                </Grid>
+                    <Button Content="Update . . ." Height="30" FontWeight="Bold" Width="220" HorizontalAlignment="Left" IsEnabled="{Binding CanUpdate}" Margin="0,5,0,5" />
+                </StackPanel>
             </TabItem>
         </TabControl>
 

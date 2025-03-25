@@ -1,3 +1,5 @@
+using CMM.Test.GUI.ViewModels;
+
 namespace CMM.Test.GUI.UnitTests
 {
     public class SelectFolderViewModelTests
