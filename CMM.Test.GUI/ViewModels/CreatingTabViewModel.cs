@@ -12,14 +12,18 @@ internal class CreatingTabViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    private readonly CreatingTabModel _modelCreatingTabModel;
+
     private string _jobName;
     private string _setupName;
     private string _lotName;
     private string _waferId;
     private string _resultPath;
 
-    public CreatingTabViewModel()
+    public CreatingTabViewModel(CreatingTabModel modelCreatingTabModel)
     {
+        _modelCreatingTabModel = modelCreatingTabModel;
+    
         _jobName = "Job Name";
         _setupName = "Setup Name";
         _lotName = "Lot Name";
