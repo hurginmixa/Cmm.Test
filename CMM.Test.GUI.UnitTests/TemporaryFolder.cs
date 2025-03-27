@@ -1,20 +1,24 @@
-namespace CMM.Test.GUI.UnitTests;
+using System;
+using System.IO;
 
-public class TemporaryFolder : IDisposable
+namespace CMM.Test.GUI.UnitTests
 {
-    private readonly string _folderPath;
-
-    public TemporaryFolder()
+    public class TemporaryFolder : IDisposable
     {
-        _folderPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        private readonly string _folderPath;
 
-        Directory.CreateDirectory(_folderPath);
-    }
+        public TemporaryFolder()
+        {
+            _folderPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
-    public string FolderPath => _folderPath;
+            Directory.CreateDirectory(_folderPath);
+        }
 
-    public void Dispose()
-    {
-        Directory.Delete(_folderPath, recursive: true);
+        public string FolderPath => _folderPath;
+
+        public void Dispose()
+        {
+            Directory.Delete(_folderPath, recursive: true);
+        }
     }
 }
