@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Tools\RefProperty.cs" />
     <Compile Include="Tools\RangeObservableCollection.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
     <Compile Include="ViewModels\CreatingTabViewModel.cs" />
