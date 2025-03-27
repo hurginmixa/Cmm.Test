@@ -15,22 +15,10 @@ namespace CMM.Test.GUI.ViewModels
 
         private readonly CreatingTabModel _modelCreatingTabModel;
 
-        private string _jobName;
-        private string _setupName;
-        private string _lotName;
-        private string _waferId;
-        private string _resultPath;
-
         public CreatingTabViewModel(CreatingTabModel modelCreatingTabModel)
         {
             _modelCreatingTabModel = modelCreatingTabModel;
     
-            _jobName = "Job Name";
-            _setupName = "Setup Name";
-            _lotName = "Lot Name";
-            _waferId = "Wafer Id";
-            _resultPath = "Result Path";
-
             LoadResMapCommand = new RelayCommand(o => LoadResult(o));
 
             CheckResultCommand = new RelayCommand(o => OpenCheckResultDialog(o));
@@ -46,32 +34,56 @@ namespace CMM.Test.GUI.ViewModels
 
         public string JobName
         {
-            get => _jobName;
-            set => SetField(ref _jobName, value);
+            get => _modelCreatingTabModel.JobName.Value;
+            set => SetField(_modelCreatingTabModel.JobName, value);
         }
 
         public string SetupName
         {
-            get => _setupName;
-            set => SetField(ref _setupName, value);
+            get => _modelCreatingTabModel.SetupName.Value;
+            set => SetField(_modelCreatingTabModel.SetupName, value);
         }
 
         public string LotName
         {
-            get => _lotName;
-            set => SetField(ref _lotName, value);
+            get => _modelCreatingTabModel.Lot.Value;
+            set => SetField(_modelCreatingTabModel.Lot, value);
         }
 
         public string WaferId
         {
-            get => _waferId;
-            set => SetField(ref _waferId, value);
+            get => _modelCreatingTabModel.WaferId.Value;
+            set => SetField(_modelCreatingTabModel.WaferId, value);
         }
 
-        public string ResultPath
-        {
-            get => _resultPath;
-            set => SetField(ref _resultPath, value);
+        public bool CreateOnInternalBins 
+        { 
+            get=> _modelCreatingTabModel.CreateOnInternalBins.Value;
+            set => SetField(_modelCreatingTabModel.CreateOnInternalBins, value);
+        }
+
+        public bool AssumeAutoCycle 
+        { 
+            get=> _modelCreatingTabModel.AssumeAutoCycle.Value;
+            set => SetField(_modelCreatingTabModel.AssumeAutoCycle, value);
+        }
+        
+        public bool AssumeVerification 
+        { 
+            get=> _modelCreatingTabModel.AssumeVerification.Value;
+            set => SetField(_modelCreatingTabModel.AssumeVerification, value);
+        }
+
+        public bool NotShowMap 
+        { 
+            get=> _modelCreatingTabModel.NotShowMap.Value;
+            set => SetField(_modelCreatingTabModel.NotShowMap, value);
+        }
+
+        public bool NotShowMap1 
+        { 
+            get=> _modelCreatingTabModel.ImportAfterCreate.Value;
+            set => SetField(_modelCreatingTabModel.ImportAfterCreate, value);
         }
 
         public bool CanCreate => true;
@@ -83,7 +95,13 @@ namespace CMM.Test.GUI.ViewModels
         private void OpenCheckResultDialog(object o)
         {
             string basePath = @"\\mixa7th\c$\Falcon\ScanResults";
-            SelectedFolderModel selectedFolderModel = new SelectedFolderModel();
+            SelectedFolderModel selectedFolderModel = new SelectedFolderModel()
+            {
+                Job = JobName,
+                Setup = SetupName,
+                Lot = LotName,
+                WaferId = WaferId
+            };
 
             bool result = true;
 
@@ -98,7 +116,6 @@ namespace CMM.Test.GUI.ViewModels
                 SetupName = selectedFolderModel.Setup;
                 LotName = selectedFolderModel.Lot;
                 WaferId = selectedFolderModel.WaferId;
-                ResultPath = selectedFolderModel.ResultPath;
             }
         }
 
@@ -113,14 +130,14 @@ namespace CMM.Test.GUI.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        protected bool SetField<T>(RefProperty<T> field, T value, [CallerMemberName] string propertyName = null)
         {
-            if (EqualityComparer<T>.Default.Equals(field, value))
+            if (EqualityComparer<T>.Default.Equals(field.Value, value))
             {
                 return false;
             }
 
-            field = value;
+            field.Value = value;
             OnPropertyChanged(propertyName);
             return true;
         }
