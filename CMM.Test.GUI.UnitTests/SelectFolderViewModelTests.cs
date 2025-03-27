@@ -1,4 +1,7 @@
+using System.IO;
+using System.Linq;
 using CMM.Test.GUI.ViewModels;
+using NUnit.Framework;
 
 namespace CMM.Test.GUI.UnitTests
 {
@@ -12,22 +15,23 @@ namespace CMM.Test.GUI.UnitTests
         [Test]
         public void GetJobListTest()
         {
-            using TemporaryFolder temporaryFolder = new TemporaryFolder();
+            using (TemporaryFolder temporaryFolder = new TemporaryFolder())
+            {
+                string folderPath = temporaryFolder.FolderPath;
 
-            string folderPath = temporaryFolder.FolderPath;
+                Assert.That(SelectFolderViewModel.GetJobList(folderPath).Any, Is.False);
 
-            Assert.That(SelectFolderViewModel.GetJobList(folderPath).Any, Is.False);
+                Directory.CreateDirectory(Path.Combine(folderPath, @"JobFolder\SetupFolder"));
+                Assert.That(SelectFolderViewModel.GetJobList(folderPath).Any, Is.False);
 
-            Directory.CreateDirectory(Path.Combine(folderPath, @"JobFolder\SetupFolder"));
-            Assert.That(SelectFolderViewModel.GetJobList(folderPath).Any, Is.False);
+                Directory.CreateDirectory(Path.Combine(folderPath, @"JobFolder\SetupFolder\LotFolder"));
+                Assert.That(SelectFolderViewModel.GetJobList(folderPath).Any, Is.False);
 
-            Directory.CreateDirectory(Path.Combine(folderPath, @"JobFolder\SetupFolder\LotFolder"));
-            Assert.That(SelectFolderViewModel.GetJobList(folderPath).Any, Is.False);
-
-            Directory.CreateDirectory(Path.Combine(folderPath, @"JobFolder\SetupFolder\LotFolder\WaferFolder"));
-            string[] jobList = SelectFolderViewModel.GetJobList(folderPath).ToArray();
-            Assert.That(jobList.Any, Is.True);
-            Assert.That(jobList[0], Is.EqualTo("JobFolder"));
+                Directory.CreateDirectory(Path.Combine(folderPath, @"JobFolder\SetupFolder\LotFolder\WaferFolder"));
+                string[] jobList = SelectFolderViewModel.GetJobList(folderPath).ToArray();
+                Assert.That(jobList.Any, Is.True);
+                Assert.That(jobList[0], Is.EqualTo("JobFolder"));
+            }
         }
     }
 }

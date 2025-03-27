@@ -1,41 +1,48 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace CMM.Test.GUI.Tools;
-
-public class RangeObservableCollection<T> : ObservableCollection<T>
+namespace CMM.Test.GUI.Tools
 {
-    private bool _suppressNotification = false;
-
-    public void AddRange(IEnumerable<T> items)
+    public class RangeObservableCollection<T> : ObservableCollection<T>
     {
-        if (items == null) throw new ArgumentNullException(nameof(items));
+        private bool _suppressNotification = false;
 
-        _suppressNotification = true;
-
-        foreach (var item in items)
+        public void AddRange(IEnumerable<T> items)
         {
-            Items.Add(item); // Добавляем напрямую в базовую коллекцию
+            if (items == null) throw new ArgumentNullException(nameof(items));
+
+            _suppressNotification = true;
+
+            foreach (var item in items)
+            {
+                Items.Add(item); // Добавляем напрямую в базовую коллекцию
+            }
+
+            _suppressNotification = false;
+
+            // Генерируем одно событие об изменении коллекции
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
+            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
         }
 
-        _suppressNotification = false;
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (!_suppressNotification)
+            {
+                base.OnCollectionChanged(e);
+            }
+        }
 
-        // Генерируем одно событие об изменении коллекции
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
-        OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
-    }
-
-    protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-    {
-        if (!_suppressNotification)
-            base.OnCollectionChanged(e);
-    }
-
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        if (!_suppressNotification)
-            base.OnPropertyChanged(e);
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (!_suppressNotification)
+            {
+                base.OnPropertyChanged(e);
+            }
+        }
     }
 }

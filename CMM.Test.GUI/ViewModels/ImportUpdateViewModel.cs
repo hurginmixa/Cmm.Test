@@ -1,34 +1,36 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CMM.Test.GUI.Models;
 
-namespace CMM.Test.GUI.ViewModels;
-
-internal class ImportUpdateViewModel : INotifyPropertyChanged
+namespace CMM.Test.GUI.ViewModels
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    private readonly ImportUpdateTabModel _importUpdateTabModel;
-
-    public ImportUpdateViewModel(ImportUpdateTabModel importUpdateTabModel)
+    internal class ImportUpdateViewModel : INotifyPropertyChanged
     {
-        _importUpdateTabModel = importUpdateTabModel;
-    }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+        private readonly ImportUpdateTabModel _importUpdateTabModel;
 
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
+        public ImportUpdateViewModel(ImportUpdateTabModel importUpdateTabModel)
         {
-            return false;
+            _importUpdateTabModel = importUpdateTabModel;
         }
 
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+            {
+                return false;
+            }
+
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
     }
 }
