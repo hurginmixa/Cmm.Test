@@ -1,11 +1,19 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CMM.Test.GUI.Models;
 
 namespace CMM.Test.GUI.ViewModels;
 
 internal class ImportUpdateViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    private readonly ImportUpdateTabModel _importUpdateTabModel;
+
+    public ImportUpdateViewModel(ImportUpdateTabModel importUpdateTabModel)
+    {
+        _importUpdateTabModel = importUpdateTabModel;
+    }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {

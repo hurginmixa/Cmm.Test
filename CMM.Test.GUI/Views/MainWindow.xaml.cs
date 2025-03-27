@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using CMM.Test.GUI.Models;
 using CMM.Test.GUI.ViewModels;
 
 namespace CMM.Test.GUI.Views
@@ -12,7 +13,7 @@ namespace CMM.Test.GUI.Views
         {
             InitializeComponent();
 
-            DataContext = new MainWindowViewModel();
+            DataContext = new MainWindowViewModel(new CmmTestModel());
         }
     }
 }
