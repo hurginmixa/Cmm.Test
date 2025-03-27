@@ -152,22 +152,21 @@
                     <!-- Yield + Checkboxes -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                         <StackPanel>
-                            <TextBlock Text="Yield"/>
-                            <Border Width="150" Height="70" BorderBrush="Black" BorderThickness="1">
+                            <GroupBox BorderBrush="Black" BorderThickness="1" Header="Yield">
                                 <StackPanel Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,0,5,5">
                                         <TextBlock Text="Bin" Width="50"/>
                                         <TextBox Text="{Binding ResultPath}" Width="50"/>
                                     </StackPanel>
                                     
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,0,5,5">
                                         <TextBlock Text="%" Width="50" />
                                         <TextBox Text="{Binding ResultPath}" Width="50"/>
                                     </StackPanel>
 
-                                    <Button Content="Decrease Yield" Margin="0,0" Command="{Binding SetResultPathCommand}" HorizontalAlignment="Left" Padding="5"/>
+                                    <Button Content="Decrease Yield" Margin="2,0" Command="{Binding SetResultPathCommand}" HorizontalAlignment="Left" Padding="5"/>
                                 </StackPanel>
-                            </Border>
+                            </GroupBox>
                         </StackPanel>
                         <StackPanel Margin="20,0,0,0">
                             <CheckBox Content="In Verification" IsChecked="{Binding InVerification}" Margin="0,5"/>
