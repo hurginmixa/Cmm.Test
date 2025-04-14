@@ -1,13 +1,17 @@
-﻿namespace CMM.Test.GUI.Models
+﻿using CMM.Test.GUI.CmmWrappers;
+
+namespace CMM.Test.GUI.Models
 {
-    internal class CmmTestModel
+    public class CmmTestModel
     {
-        public CmmTestModel()
+        public CmmTestModel(ICmmWrapper cmmWrapper)
         {
-            CreatingTabModel = new CreatingTabModel();
+            CreatingTabModel = new CreatingTabModel(this, cmmWrapper);
 
             ImportUpdateTabModel = new ImportUpdateTabModel();
         }
+
+        public string BaseResultsPath => @"\\mixa7th\c$\Falcon\ScanResults";
 
         public CreatingTabModel CreatingTabModel { get; }
 

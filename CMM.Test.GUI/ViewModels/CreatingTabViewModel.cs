@@ -1,29 +1,62 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using CMM.Test.GUI.CmmWrappers;
+using CMM.Test.GUI.CmmWrappers.DummyImplementations;
 using CMM.Test.GUI.Models;
 using CMM.Test.GUI.Tools;
 using CMM.Test.GUI.Views;
 
 namespace CMM.Test.GUI.ViewModels
 {
-    internal class CreatingTabViewModel : INotifyPropertyChanged
+    public class CreatingTabViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private readonly CreatingTabModel _modelCreatingTabModel;
+        private readonly CreatingTabModel _model;
+        private readonly IFileSystemWrapper _fileSystem;
+        private readonly ObservableCollection<CmmFormatPropertyViewModel> _converterNameList;
 
-        public CreatingTabViewModel(CreatingTabModel modelCreatingTabModel)
+        private CmmFormatPropertyViewModel _selectedConverter;
+        private bool _isResultLoaded;
+        private bool _isReadyToCreate;
+
+        public CreatingTabViewModel(CreatingTabModel model, IFileSystemWrapper fileSystem)
         {
-            _modelCreatingTabModel = modelCreatingTabModel;
-    
-            LoadResMapCommand = new RelayCommand(o => LoadResult(o));
+            _model = model;
+            _fileSystem = fileSystem;
 
-            CheckResultCommand = new RelayCommand(o => OpenCheckResultDialog(o));
-        
-            CreateCommand = new RelayCommand(o => Create(o), () => CanCreate);
+            _converterNameList = new ObservableCollection<CmmFormatPropertyViewModel>(model.CmmWrapper.CreatingConverters.Select(r => new CmmFormatPropertyViewModel(r)));
+
+            _selectedConverter = null;
+            _isResultLoaded = false;
+            _isReadyToCreate = false;
+
+            LoadResMapCommand = new RelayCommand(o => OnLoadResult(o), _ => IsDataCorrect);
+
+            CheckResultCommand = new RelayCommand(o => OnCheckResult(o));
+
+            CreateCommand = new RelayCommand(o => _model.DoCreate(), _ => IsReadyToCreate);
+
+            PropertyChanged += (sender, args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(IsResultLoaded):
+                        CheckReadyToCreate();
+                        break;
+
+                    case nameof(SelectedConverter):
+                        _model.ConverterName.Value = SelectedConverter?.Name ?? "";
+                        CheckReadyToCreate();
+                        break;
+                }
+            };
         }
 
         public ICommand LoadResMapCommand { get; }
@@ -34,67 +67,94 @@ namespace CMM.Test.GUI.ViewModels
 
         public string JobName
         {
-            get => _modelCreatingTabModel.JobName.Value;
-            set => SetField(_modelCreatingTabModel.JobName, value);
+            get => _model.JobName.Value;
+            set => SetField(_model.JobName, value);
         }
 
         public string SetupName
         {
-            get => _modelCreatingTabModel.SetupName.Value;
-            set => SetField(_modelCreatingTabModel.SetupName, value);
+            get => _model.SetupName.Value;
+            set => SetField(_model.SetupName, value);
         }
 
         public string LotName
         {
-            get => _modelCreatingTabModel.Lot.Value;
-            set => SetField(_modelCreatingTabModel.Lot, value);
+            get => _model.Lot.Value;
+            set => SetField(_model.Lot, value);
         }
 
         public string WaferId
         {
-            get => _modelCreatingTabModel.WaferId.Value;
-            set => SetField(_modelCreatingTabModel.WaferId, value);
+            get => _model.WaferId.Value;
+            set => SetField(_model.WaferId, value);
+        }
+
+        public bool IsResultLoaded
+        {
+            get => _isResultLoaded;
+            set => SetField(ref _isResultLoaded, value);
+        }
+
+        public bool IsReadyToCreate
+        {
+            get => _isReadyToCreate;
+            set => SetField(ref _isReadyToCreate, value);
+        }
+
+        public ObservableCollection<CmmFormatPropertyViewModel> ConverterNameList
+        {
+            get => _converterNameList;
+            set => SetField(_converterNameList, value);
+        }
+
+        public CmmFormatPropertyViewModel SelectedConverter
+        {
+            get => _selectedConverter;
+            set => SetField(ref _selectedConverter, value);
+        }
+
+        private void CheckReadyToCreate()
+        {
+            IsReadyToCreate = IsResultLoaded && SelectedConverter != null;
         }
 
         public bool CreateOnInternalBins 
         { 
-            get=> _modelCreatingTabModel.CreateOnInternalBins.Value;
-            set => SetField(_modelCreatingTabModel.CreateOnInternalBins, value);
+            get=> _model.CreateOnInternalBins.Value;
+            set => SetField(_model.CreateOnInternalBins, value);
         }
 
         public bool AssumeAutoCycle 
         { 
-            get=> _modelCreatingTabModel.AssumeAutoCycle.Value;
-            set => SetField(_modelCreatingTabModel.AssumeAutoCycle, value);
+            get=> _model.AssumeAutoCycle.Value;
+            set => SetField(_model.AssumeAutoCycle, value);
         }
         
         public bool AssumeVerification 
         { 
-            get=> _modelCreatingTabModel.AssumeVerification.Value;
-            set => SetField(_modelCreatingTabModel.AssumeVerification, value);
+            get=> _model.AssumeVerification.Value;
+            set => SetField(_model.AssumeVerification, value);
         }
 
         public bool NotShowMap 
         { 
-            get=> _modelCreatingTabModel.NotShowMap.Value;
-            set => SetField(_modelCreatingTabModel.NotShowMap, value);
+            get=> _model.NotShowMap.Value;
+            set => SetField(_model.NotShowMap, value);
         }
 
-        public bool NotShowMap1 
+        public bool ImportAfterCreate 
         { 
-            get=> _modelCreatingTabModel.ImportAfterCreate.Value;
-            set => SetField(_modelCreatingTabModel.ImportAfterCreate, value);
+            get=> _model.ImportAfterCreate.Value;
+            set => SetField(_model.ImportAfterCreate, value);
         }
 
-        public bool CanCreate => true;
-
-        private void LoadResult(object o)
+        private void OnLoadResult(object o)
         {
+            LoadResult();
         }
 
-        private void OpenCheckResultDialog(object o)
+        private void OnCheckResult(object o)
         {
-            string basePath = @"\\mixa7th\c$\Falcon\ScanResults";
             SelectedFolderModel selectedFolderModel = new SelectedFolderModel()
             {
                 Job = JobName,
@@ -103,26 +163,44 @@ namespace CMM.Test.GUI.ViewModels
                 WaferId = WaferId
             };
 
-            bool result = true;
-
-            var dialog = new SelectFolderView(basePath, selectedFolderModel);
-            dialog.Owner = (Window) o;
-
-            result = dialog.ShowDialog() ?? false;
-
-            if (result)
+            if (!OpenCheckResultDialog((Window) o, _model.CmmTestModel.BaseResultsPath, selectedFolderModel, _fileSystem))
             {
-                JobName = selectedFolderModel.Job;
-                SetupName = selectedFolderModel.Setup;
-                LotName = selectedFolderModel.Lot;
-                WaferId = selectedFolderModel.WaferId;
+                return;
             }
+
+            JobName = selectedFolderModel.Job;
+            SetupName = selectedFolderModel.Setup;
+            LotName = selectedFolderModel.Lot;
+            WaferId = selectedFolderModel.WaferId;
+
+            LoadResult();
         }
 
-        private void Create(object o)
+        private bool IsDataCorrect => !string.IsNullOrWhiteSpace(JobName) && !string.IsNullOrWhiteSpace(SetupName) && !string.IsNullOrWhiteSpace(LotName) && !string.IsNullOrWhiteSpace(WaferId);
+
+        private void LoadResult()
         {
-            // TODO: Implement creation logic
-            MessageBox.Show("Create command executed!");
+            if (IsDataCorrect)
+            {
+                string resultPath = Path.Combine(_model.CmmTestModel.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
+                if (_fileSystem.FileExists(resultPath))
+                {
+                    IsResultLoaded = true;
+                    return;
+                }
+            }
+
+            IsResultLoaded = false;
+        }
+
+        private static bool OpenCheckResultDialog(Window owner, string baseResultPath, SelectedFolderModel selectedFolderModel, IFileSystemWrapper fileSystem)
+        {
+            var dialog = new SelectFolderView(baseResultPath, selectedFolderModel, fileSystem)
+            {
+                Owner = owner
+            };
+
+            return dialog.ShowDialog() ?? false;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -130,7 +208,7 @@ namespace CMM.Test.GUI.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected bool SetField<T>(RefProperty<T> field, T value, [CallerMemberName] string propertyName = null)
+        private bool SetField<T>(RefProperty<T> field, T value, [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(field.Value, value))
             {
@@ -138,6 +216,18 @@ namespace CMM.Test.GUI.ViewModels
             }
 
             field.Value = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
+        private bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+            {
+                return false;
+            }
+
+            field = value;
             OnPropertyChanged(propertyName);
             return true;
         }

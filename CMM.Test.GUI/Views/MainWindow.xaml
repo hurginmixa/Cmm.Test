@@ -46,13 +46,12 @@
 
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <CheckBox Content="Not Show Map" IsChecked="{Binding NotShowMap}" Margin="0,0,20,0"/>
-                        <CheckBox Content="Import After Create" IsChecked="{Binding ImportAfterCreate}" />
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,20">
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,20" IsEnabled="{Binding IsResultLoaded}">
                         <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                             <TextBlock Text="Destination for :" FontWeight="Bold" FontSize="15"/>
-                            <ListBox ItemsSource="{Binding ConverterList}" SelectedItem="{Binding SelectedConverter}" Height="100" Width="300"/>
+                            <ListBox ItemsSource="{Binding ConverterNameList}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedConverter}" Height="100" Width="300" />
                             <TextBlock Text="Search Converter"/>
                             <TextBox Text="{Binding SearchText}" />
                         </StackPanel>
@@ -61,6 +60,7 @@
                             <CheckBox Content="Create On Internal Bins" IsChecked="{Binding CreateOnInternalBins}" Margin="0,0,0,5"/>
                             <CheckBox Content="Assume AutoCycle" IsChecked="{Binding AssumeAutoCycle}" Margin="0,0,0,5"/>
                             <CheckBox Content="Assume Verification" IsChecked="{Binding AssumeVerification}" Margin="0,0,0,5"/>
+                            <CheckBox Content="Import After Create" IsChecked="{Binding ImportAfterCreate}" Margin="0,0,0,5"/>
 
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Export flat position" VerticalAlignment="Center" Margin="0,0,5,0"/>
