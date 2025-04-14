@@ -5,7 +5,7 @@ using CMM.Test.GUI.Models;
 
 namespace CMM.Test.GUI.ViewModels
 {
-    internal class ImportUpdateViewModel : INotifyPropertyChanged
+    public class ImportUpdateViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

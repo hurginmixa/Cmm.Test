@@ -12,7 +12,10 @@ namespace CMM.Test.GUI.Tools
 
         public void AddRange(IEnumerable<T> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
             _suppressNotification = true;
 

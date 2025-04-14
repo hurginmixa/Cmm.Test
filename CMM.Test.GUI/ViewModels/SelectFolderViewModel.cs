@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using CMM.Test.GUI.CmmWrappers;
 using CMM.Test.GUI.Models;
 using CMM.Test.GUI.Tools;
 
@@ -18,15 +19,45 @@ namespace CMM.Test.GUI.ViewModels
         private string _selectedWafer = string.Empty;
 
         private readonly string _basePath;
+        private readonly IFileSystemWrapper _fileSystem;
         private readonly SelectedFolderModel _model;
 
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public SelectFolderViewModel(string basePath, SelectedFolderModel model)
+        public SelectFolderViewModel(string basePath, SelectedFolderModel model, IFileSystemWrapper fileSystem)
         {
             _basePath = basePath;
             _model = model;
+            _fileSystem = fileSystem;
+
+            OkCommand = new RelayCommand(
+                o =>
+                {
+                    if (!(o is Window window))
+                    {
+                        return;
+                    }
+
+                    _model.Job = SelectedJob;
+                    _model.Setup = SelectedSetup;
+                    _model.Lot = SelectedLot;
+                    _model.WaferId = SelectedWafer;
+                    _model.ResultPath = GetFullPath();
+
+                    window.DialogResult = true;
+                    window.Close();
+                },
+                o => !string.IsNullOrWhiteSpace(GetFullPath()));
+        
+            CancelCommand = new RelayCommand(o =>
+            {
+                if (o is Window window)
+                {
+                    window.DialogResult = false;
+                    window.Close();
+                }
+            });
 
             LoadJobs();
 
@@ -47,30 +78,6 @@ namespace CMM.Test.GUI.ViewModels
             SelectedLot = !string.IsNullOrEmpty(_model.Lot) && Lots.Contains(_model.Lot) ? _model.Lot : Lots.First();
 
             SelectedWafer = !string.IsNullOrEmpty(_model.WaferId) && Wafers.Contains(_model.WaferId) ? _model.WaferId : Wafers.First();
-
-            OkCommand = new RelayCommand(o =>
-            {
-                if (o is Window window)
-                {
-                    _model.Job = SelectedJob;
-                    _model.Setup = SelectedSetup;
-                    _model.Lot = SelectedLot;
-                    _model.WaferId = SelectedWafer;
-                    _model.ResultPath = GetFullPath();
-
-                    window.DialogResult = true;
-                    window.Close();
-                }
-            });
-        
-            CancelCommand = new RelayCommand(o =>
-            {
-                if (o is Window window)
-                {
-                    window.DialogResult = false;
-                    window.Close();
-                }
-            });
         }
 
         public RangeObservableCollection<string> Jobs { get; private set; } = new RangeObservableCollection<string>();
@@ -148,38 +155,40 @@ namespace CMM.Test.GUI.ViewModels
         {
             Jobs.Clear();
 
-            Jobs.AddRange(GetJobList(_basePath));
+            Jobs.AddRange(GetJobList(_basePath, _fileSystem));
 
             OnPropertyChanged();
 
             SelectedJob = Jobs.Count > 0 ? Jobs[0] : string.Empty;
         }
 
-        public static IEnumerable<string> GetJobList(string basePath)
+        public static IEnumerable<string> GetJobList(string basePath, IFileSystemWrapper fileSystem)
         {
-            if (!Directory.Exists(basePath))
+            if (!fileSystem.DirectoryExists(basePath))
             {
                 yield break;
             }
 
-            foreach (string jobFolder in Directory.GetDirectories(basePath).Where(path => HasRequiredDepth(path, 3)))
+            foreach (string jobFolder in fileSystem.GetDirectories(basePath).Where(path => HasRequiredDepth(fileSystem, path, 3)))
             {
                 yield return Path.GetFileName(jobFolder);
             }
         }
 
-        private static bool HasRequiredDepth(string path, int depthLimit)
+        private static bool HasRequiredDepth(IFileSystemWrapper fileSystem, string path, int depthLimit)
         {
             int depth = 0;
 
-            while (depth < depthLimit && Directory.Exists(path) && Directory.GetDirectories(path).Any())
+            string[] directories;
+
+            while (depth < depthLimit && fileSystem.DirectoryExists(path) && (directories = fileSystem.GetDirectories(path)).Any())
             {
-                path = Directory.GetDirectories(path).First();
+                path = directories.First();
 
                 depth++;
             }
 
-            return depth >= depthLimit;
+            return depth >= depthLimit && fileSystem.FileExists(Path.Combine(path, "ScanLog.ini"));
         }
 
         private void LoadSetups()
@@ -194,9 +203,9 @@ namespace CMM.Test.GUI.ViewModels
             {
                 string setupsPath = Path.Combine(_basePath, SelectedJob);
 
-                if (Directory.Exists(setupsPath))
+                if (_fileSystem.DirectoryExists(setupsPath))
                 {
-                    Setups.AddRange(Directory.GetDirectories(setupsPath).Where(path => HasRequiredDepth(path, 2)).Select(Path.GetFileName));
+                    Setups.AddRange(_fileSystem.GetDirectories(setupsPath).Where(path => HasRequiredDepth(_fileSystem, path, 2)).Select(Path.GetFileName));
                 }
             }
 
@@ -216,9 +225,9 @@ namespace CMM.Test.GUI.ViewModels
             else
             {
                 string lotsPath = Path.Combine(_basePath, SelectedJob, SelectedSetup);
-                if (Directory.Exists(lotsPath))
+                if (_fileSystem.DirectoryExists(lotsPath))
                 {
-                    Lots.AddRange(Directory.GetDirectories(lotsPath).Where(path => HasRequiredDepth(path, 1)).Select(Path.GetFileName));
+                    Lots.AddRange(_fileSystem.GetDirectories(lotsPath).Where(path => HasRequiredDepth(_fileSystem, path, 1)).Select(Path.GetFileName));
                 }
             }
 
@@ -238,9 +247,9 @@ namespace CMM.Test.GUI.ViewModels
             else
             {
                 string wafersPath = Path.Combine(_basePath, SelectedJob, SelectedSetup, SelectedLot);
-                if (Directory.Exists(wafersPath))
+                if (_fileSystem.DirectoryExists(wafersPath))
                 {
-                    Wafers.AddRange(Directory.GetDirectories(wafersPath).Select(Path.GetFileName));
+                    Wafers.AddRange(_fileSystem.GetDirectories(wafersPath).Select(Path.GetFileName));
                 }
             }
 
@@ -249,7 +258,7 @@ namespace CMM.Test.GUI.ViewModels
             SelectedWafer = Wafers.Count > 0 ? Wafers[0] : string.Empty;
         }
 
-        public string GetFullPath()
+        private string GetFullPath()
         {
             if (string.IsNullOrEmpty(SelectedJob) || string.IsNullOrEmpty(SelectedSetup) ||
                 string.IsNullOrEmpty(SelectedLot) || string.IsNullOrEmpty(SelectedWafer))

@@ -1,29 +1,34 @@
-﻿using CMM.Test.GUI.Tools;
+﻿using CMM.Test.GUI.CmmWrappers;
+using CMM.Test.GUI.Tools;
 
 namespace CMM.Test.GUI.Models
 {
     public class CreatingTabModel
     {
-        public CreatingTabModel()
+        public CreatingTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper)
         {
-            JobName = "Job Name1";
+            CmmTestModel = cmmTestModel;
+            CmmWrapper = cmmWrapper;
+            
+            JobName = "";
+            SetupName = "";
+            Lot = "";
+            WaferId = "";
 
-            SetupName = "Setup Name";
-            
-            Lot = "Lot Name";
-            
-            WaferId = "Wafer Id";
+            ConverterName = "";
 
             CreateOnInternalBins = true;
-
             AssumeAutoCycle = false;
-
             AssumeVerification = true;
-
             NotShowMap = false;
-
             ImportAfterCreate = true;
         }
+
+        public CmmTestModel CmmTestModel { get; }
+        
+        public ICmmWrapper CmmWrapper { get; }
+
+        public RefProperty<string> ConverterName { get; }
 
         public RefProperty<string> JobName { get; set; }
         
@@ -42,5 +47,7 @@ namespace CMM.Test.GUI.Models
         public RefProperty<bool> NotShowMap { get; set; }
         
         public RefProperty<bool> ImportAfterCreate { get; set; }
+
+        public void DoCreate() => CmmWrapper.DoCreate(ConverterName);
     }
 }

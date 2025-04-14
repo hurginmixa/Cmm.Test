@@ -55,9 +55,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CmmWrappers\DummyImplementations\DummyFileSystemWrapper.cs" />
+    <Compile Include="CmmWrappers\DummyImplementations\DummyCmmFormatProperty.cs" />
+    <Compile Include="CmmWrappers\DummyImplementations\DummyCmmWrapper.cs" />
+    <Compile Include="CmmWrappers\FileSystemWrapper.cs" />
+    <Compile Include="CmmWrappers\IFileSystemWrapper.cs" />
+    <Compile Include="CmmWrappers\ICmmFormatProperty.cs" />
+    <Compile Include="CmmWrappers\ICmmWrapper.cs" />
+    <Compile Include="Tools\IConverterNameSource.cs" />
     <Compile Include="Tools\RefProperty.cs" />
     <Compile Include="Tools\RangeObservableCollection.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
+    <Compile Include="ViewModels\CmmFormatPropertyViewModel.cs" />
     <Compile Include="ViewModels\CreatingTabViewModel.cs" />
     <Compile Include="ViewModels\ImportUpdateViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -111,5 +120,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
