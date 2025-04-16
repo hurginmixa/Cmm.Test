@@ -41,9 +41,9 @@ namespace CMM.Test.GUI.Models
                     IniFileHelper.PutIni(CREATING_TAB_SECTION, "WaferId", configPath, (string)model.CreatingTabModel.WaferId ?? string.Empty);
                     IniFileHelper.PutIni(CREATING_TAB_SECTION, "CreateOnInternalBins", configPath, model.CreatingTabModel.CreateOnInternalBins?.Value ?? false);
                     IniFileHelper.PutIni(CREATING_TAB_SECTION, "AssumeAutoCycle", configPath, model.CreatingTabModel.AssumeAutoCycle?.Value ?? false);
-                    IniFileHelper.PutIni(CREATING_TAB_SECTION, "AssumeVerification", configPath, model.CreatingTabModel.AssumeVerification?.Value ?? true);
+                    IniFileHelper.PutIni(CREATING_TAB_SECTION, "AssumeVerification", configPath, model.CreatingTabModel.AssumeVerification?.Value ?? false);
                     IniFileHelper.PutIni(CREATING_TAB_SECTION, "NotShowMap", configPath, model.CreatingTabModel.NotShowMap?.Value ?? false);
-                    IniFileHelper.PutIni(CREATING_TAB_SECTION, "ImportAfterCreate", configPath, model.CreatingTabModel.ImportAfterCreate?.Value ?? true);
+                    IniFileHelper.PutIni(CREATING_TAB_SECTION, "ImportAfterCreate", configPath, model.CreatingTabModel.ImportAfterCreate?.Value ?? false);
                 }
 
                 // Save ImportUpdateTabModel properties
