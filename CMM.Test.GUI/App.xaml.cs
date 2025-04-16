@@ -13,6 +13,8 @@ namespace CMM.Test.GUI
     /// </summary>
     public partial class App : Application
     {
+        private CmmTestModel _cmmTestModel;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -21,20 +23,32 @@ namespace CMM.Test.GUI
 
             cmmWrapper.DoCreateEvent += s =>
             {
+                if (MainWindow != null)
+                {
+                    MessageBox.Show(MainWindow, s);
+                }
+
                 return true;
             };
 
-            CmmTestModel cmmTestModel = new CmmTestModel(cmmWrapper);
+            _cmmTestModel = CmmTestModelHelper.CreateFromIni(cmmWrapper);
 
-            DummyFileSystemWrapper fileSystem = DummyFileSystemWrapper.CreateTestFileSystem(cmmTestModel.BaseResultsPath);
+            DummyFileSystemWrapper fileSystem = DummyFileSystemWrapper.CreateTestFileSystem(_cmmTestModel.BaseResultsPath);
 
-            MainWindowViewModel viewModel = new MainWindowViewModel(cmmTestModel, fileSystem);
+            MainWindowViewModel viewModel = new MainWindowViewModel(_cmmTestModel, fileSystem);
             
             MainWindow window = new MainWindow(viewModel);
             
             window.Show();
 
-            this.MainWindow = window;
+            MainWindow = window;
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            CmmTestModelHelper.SaveToIni(_cmmTestModel);
         }
     }
 

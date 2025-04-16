@@ -62,6 +62,7 @@
     <Compile Include="CmmWrappers\IFileSystemWrapper.cs" />
     <Compile Include="CmmWrappers\ICmmFormatProperty.cs" />
     <Compile Include="CmmWrappers\ICmmWrapper.cs" />
+    <Compile Include="Models\CmmTestModelHelper.cs" />
     <Compile Include="Tools\IConverterNameSource.cs" />
     <Compile Include="Tools\RefProperty.cs" />
     <Compile Include="Tools\RangeObservableCollection.cs" />
@@ -120,6 +121,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CmmTestModules\CmmTestModules.csproj">
+      <Project>{c50b55ac-b964-4a72-a321-5c42fdf35c71}</Project>
+      <Name>CmmTestModules</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
