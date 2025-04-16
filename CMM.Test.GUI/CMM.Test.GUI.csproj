@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CmmWrappers\CmmWrapper.cs" />
     <Compile Include="CmmWrappers\DummyImplementations\DummyFileSystemWrapper.cs" />
     <Compile Include="CmmWrappers\DummyImplementations\DummyCmmFormatProperty.cs" />
     <Compile Include="CmmWrappers\DummyImplementations\DummyCmmWrapper.cs" />
@@ -64,9 +65,11 @@
     <Compile Include="CmmWrappers\ICmmWrapper.cs" />
     <Compile Include="Models\CmmTestModelHelper.cs" />
     <Compile Include="Tools\IConverterNameSource.cs" />
+    <Compile Include="Tools\NotifyPropertyHandler.cs" />
     <Compile Include="Tools\RefProperty.cs" />
     <Compile Include="Tools\RangeObservableCollection.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
+    <Compile Include="Tools\ToolsKid.cs" />
     <Compile Include="ViewModels\CmmFormatPropertyViewModel.cs" />
     <Compile Include="ViewModels\CreatingTabViewModel.cs" />
     <Compile Include="ViewModels\ImportUpdateViewModel.cs" />
