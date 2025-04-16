@@ -1,4 +1,4 @@
-﻿using CMM.Test.GUI.CmmWrappers;
+using CMM.Test.GUI.CmmWrappers;
 using CMM.Test.GUI.Tools;
 
 namespace CMM.Test.GUI.Models
@@ -28,7 +28,7 @@ namespace CMM.Test.GUI.Models
         
         public ICmmWrapper CmmWrapper { get; }
 
-        public RefProperty<string> ConverterName { get; }
+        public RefProperty<string> ConverterName { get; set; }
 
         public RefProperty<string> JobName { get; set; }
         

@@ -26,7 +26,7 @@ namespace CMM.Test.GUI.ViewModels
         private CmmFormatPropertyViewModel _selectedConverter;
         private bool _isResultLoaded;
         private bool _isReadyToCreate;
-        private string _searchText;
+        private string _converterListFilter;
 
         public CreatingTabViewModel(CreatingTabModel model, IFileSystemWrapper fileSystem)
         {
@@ -36,11 +36,12 @@ namespace CMM.Test.GUI.ViewModels
             _allConverters = model.CmmWrapper.CreatingConverters.Select(r => new CmmFormatPropertyViewModel(r)).ToList();
             _converterNameList = new ObservableCollection<CmmFormatPropertyViewModel>(_allConverters);
 
-            _selectedConverter = null;
+            _selectedConverter = _allConverters.FirstOrDefault(c => c.Name == model.ConverterName);
+
             _isResultLoaded = false;
             _isReadyToCreate = false;
 
-            LoadResMapCommand = new RelayCommand(o => OnLoadResult(o), _ => IsDataCorrect);
+            LoadResMapCommand = new RelayCommand(o => OnLoadResult(o), _ => IsDataCorrect && fileSystem.FileExists(GetScanLogIniPath()));
 
             CheckResultCommand = new RelayCommand(o => OnCheckResult(o));
 
@@ -59,7 +60,7 @@ namespace CMM.Test.GUI.ViewModels
                         CheckReadyToCreate();
                         break;
 
-                    case nameof(SearchText):
+                    case nameof(ConverterListFilter):
                         FilterConverterList();
                         break;
                 }
@@ -120,10 +121,10 @@ namespace CMM.Test.GUI.ViewModels
             set => SetField(ref _selectedConverter, value);
         }
         
-        public string SearchText
+        public string ConverterListFilter
         {
-            get => _searchText;
-            set => SetField(ref _searchText, value);
+            get => _converterListFilter;
+            set => SetField(ref _converterListFilter, value);
         }
 
         private void CheckReadyToCreate()
@@ -195,8 +196,8 @@ namespace CMM.Test.GUI.ViewModels
         {
             if (IsDataCorrect)
             {
-                string resultPath = Path.Combine(_model.CmmTestModel.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
-                if (_fileSystem.FileExists(resultPath))
+                string scanLogIniPath = GetScanLogIniPath();
+                if (_fileSystem.FileExists(scanLogIniPath))
                 {
                     IsResultLoaded = true;
                     return;
@@ -204,6 +205,11 @@ namespace CMM.Test.GUI.ViewModels
             }
 
             IsResultLoaded = false;
+        }
+
+        private string GetScanLogIniPath()
+        {
+            return Path.Combine(_model.CmmTestModel.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
         }
 
         private static bool OpenCheckResultDialog(Window owner, string baseResultPath, SelectedFolderModel selectedFolderModel, IFileSystemWrapper fileSystem)
@@ -220,7 +226,7 @@ namespace CMM.Test.GUI.ViewModels
         {
             _converterNameList.Clear();
     
-            if (string.IsNullOrWhiteSpace(_searchText))
+            if (string.IsNullOrWhiteSpace(_converterListFilter))
             {
                 foreach (var converter in _allConverters)
                 {
@@ -230,7 +236,7 @@ namespace CMM.Test.GUI.ViewModels
                 return;
             }
     
-            var searchText = _searchText.ToLower();
+            var searchText = _converterListFilter.ToLower();
 
             var filteredList = _allConverters
                 .Where(c => c.Name.ToLower().Contains(searchText) || (c.DisplayName != null && c.DisplayName.ToLower().Contains(searchText)))

@@ -53,7 +53,7 @@
                             <TextBlock Text="Destination for :" FontWeight="Bold" FontSize="15"/>
                             <ListBox ItemsSource="{Binding ConverterNameList}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedConverter}" Height="100" Width="300" />
                             <TextBlock Text="Search Converter"/>
-                            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Text="{Binding ConverterListFilter, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Margin="5">

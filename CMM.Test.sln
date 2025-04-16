@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35728.132 d17.12
+VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMM.Test.GUI", "CMM.Test.GUI\CMM.Test.GUI.csproj", "{725D3AA6-BF8B-41E4-99EA-4910A7F6590A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMM.Test.GUI.UnitTests", "CMM.Test.GUI.UnitTests\CMM.Test.GUI.UnitTests.csproj", "{5B1C8F4D-7439-4551-A049-3FD87F659E63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmmTestModules", "CmmTestModules\CmmTestModules.csproj", "{C50B55AC-B964-4A72-A321-5C42FDF35C71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5B1C8F4D-7439-4551-A049-3FD87F659E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B1C8F4D-7439-4551-A049-3FD87F659E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B1C8F4D-7439-4551-A049-3FD87F659E63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C50B55AC-B964-4A72-A321-5C42FDF35C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C50B55AC-B964-4A72-A321-5C42FDF35C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C50B55AC-B964-4A72-A321-5C42FDF35C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C50B55AC-B964-4A72-A321-5C42FDF35C71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
