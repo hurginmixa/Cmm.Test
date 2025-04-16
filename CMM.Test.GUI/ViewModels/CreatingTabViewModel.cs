@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -21,17 +21,20 @@ namespace CMM.Test.GUI.ViewModels
         private readonly CreatingTabModel _model;
         private readonly IFileSystemWrapper _fileSystem;
         private readonly ObservableCollection<CmmFormatPropertyViewModel> _converterNameList;
+        private readonly List<CmmFormatPropertyViewModel> _allConverters;
 
         private CmmFormatPropertyViewModel _selectedConverter;
         private bool _isResultLoaded;
         private bool _isReadyToCreate;
+        private string _searchText;
 
         public CreatingTabViewModel(CreatingTabModel model, IFileSystemWrapper fileSystem)
         {
             _model = model;
             _fileSystem = fileSystem;
 
-            _converterNameList = new ObservableCollection<CmmFormatPropertyViewModel>(model.CmmWrapper.CreatingConverters.Select(r => new CmmFormatPropertyViewModel(r)));
+            _allConverters = model.CmmWrapper.CreatingConverters.Select(r => new CmmFormatPropertyViewModel(r)).ToList();
+            _converterNameList = new ObservableCollection<CmmFormatPropertyViewModel>(_allConverters);
 
             _selectedConverter = null;
             _isResultLoaded = false;
@@ -54,6 +57,10 @@ namespace CMM.Test.GUI.ViewModels
                     case nameof(SelectedConverter):
                         _model.ConverterName.Value = SelectedConverter?.Name ?? "";
                         CheckReadyToCreate();
+                        break;
+
+                    case nameof(SearchText):
+                        FilterConverterList();
                         break;
                 }
             };
@@ -111,6 +118,12 @@ namespace CMM.Test.GUI.ViewModels
         {
             get => _selectedConverter;
             set => SetField(ref _selectedConverter, value);
+        }
+        
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetField(ref _searchText, value);
         }
 
         private void CheckReadyToCreate()
@@ -202,7 +215,38 @@ namespace CMM.Test.GUI.ViewModels
 
             return dialog.ShowDialog() ?? false;
         }
+        
+        private void FilterConverterList()
+        {
+            _converterNameList.Clear();
+    
+            if (string.IsNullOrWhiteSpace(_searchText))
+            {
+                foreach (var converter in _allConverters)
+                {
+                    _converterNameList.Add(converter);
+                }
+                
+                return;
+            }
+    
+            var searchText = _searchText.ToLower();
 
+            var filteredList = _allConverters
+                .Where(c => c.Name.ToLower().Contains(searchText) || (c.DisplayName != null && c.DisplayName.ToLower().Contains(searchText)))
+                .ToList();
+    
+            foreach (var converter in filteredList)
+            {
+                _converterNameList.Add(converter);
+            }
+    
+            // Если есть совпадения и нет выбранного элемента, выбираем первый подходящий
+            if (filteredList.Any() && (_selectedConverter == null || !filteredList.Contains(_selectedConverter)))
+            {
+                SelectedConverter = filteredList.First();
+            }
+        }
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
