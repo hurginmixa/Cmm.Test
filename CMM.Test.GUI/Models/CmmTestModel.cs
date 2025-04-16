@@ -11,7 +11,7 @@ namespace CMM.Test.GUI.Models
         {
             CreatingTabModel = new CreatingTabModel(this, cmmWrapper);
 
-            ImportUpdateTabModel = new ImportUpdateTabModel();
+            ImportUpdateTabModel = new ImportUpdateTabModel(this, cmmWrapper);
         }
 
         public string BaseResultsPath => @"\\mixa7th\c$\Falcon\ScanResults";

@@ -14,10 +14,8 @@ using CMM.Test.GUI.Views;
 
 namespace CMM.Test.GUI.ViewModels
 {
-    public class CreatingTabViewModel : INotifyPropertyChanged
+    public class CreatingTabViewModel : NotifyPropertyHandler
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private readonly CreatingTabModel _model;
         private readonly IFileSystemWrapper _fileSystem;
         private readonly ObservableCollection<CmmFormatPropertyViewModel> _converterNameList;
@@ -46,6 +44,8 @@ namespace CMM.Test.GUI.ViewModels
             CheckResultCommand = new RelayCommand(o => OnCheckResult(o));
 
             CreateCommand = new RelayCommand(o => _model.DoCreate(), _ => IsReadyToCreate);
+            
+            RTPCommand = new RelayCommand(o => _model.OpenRtp(), _ => IsReadyToCreate);
 
             PropertyChanged += (sender, args) =>
             {
@@ -72,6 +72,8 @@ namespace CMM.Test.GUI.ViewModels
         public ICommand CheckResultCommand { get; }
     
         public ICommand CreateCommand { get; }
+        
+        public ICommand RTPCommand { get; }
 
         public string JobName
         {
@@ -177,7 +179,7 @@ namespace CMM.Test.GUI.ViewModels
                 WaferId = WaferId
             };
 
-            if (!OpenCheckResultDialog((Window) o, _model.CmmTestModel.BaseResultsPath, selectedFolderModel, _fileSystem))
+            if (!ToolsKid.OpenCheckResultDialog((Window) o, _model.CmmTestModel.BaseResultsPath, selectedFolderModel, _fileSystem))
             {
                 return;
             }
@@ -212,16 +214,6 @@ namespace CMM.Test.GUI.ViewModels
             return Path.Combine(_model.CmmTestModel.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
         }
 
-        private static bool OpenCheckResultDialog(Window owner, string baseResultPath, SelectedFolderModel selectedFolderModel, IFileSystemWrapper fileSystem)
-        {
-            var dialog = new SelectFolderView(baseResultPath, selectedFolderModel, fileSystem)
-            {
-                Owner = owner
-            };
-
-            return dialog.ShowDialog() ?? false;
-        }
-        
         private void FilterConverterList()
         {
             _converterNameList.Clear();
@@ -252,34 +244,6 @@ namespace CMM.Test.GUI.ViewModels
             {
                 SelectedConverter = filteredList.First();
             }
-        }
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private bool SetField<T>(RefProperty<T> field, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field.Value, value))
-            {
-                return false;
-            }
-
-            field.Value = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        private bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value))
-            {
-                return false;
-            }
-
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
         }
     }
 }

@@ -49,5 +49,7 @@ namespace CMM.Test.GUI.Models
         public RefProperty<bool> ImportAfterCreate { get; set; }
 
         public void DoCreate() => CmmWrapper.DoCreate(ConverterName);
+
+        public void OpenRtp() => CmmWrapper.OpenCreatingRtp(ConverterName);
     }
 }

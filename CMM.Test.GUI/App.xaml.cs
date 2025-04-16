@@ -25,10 +25,18 @@ namespace CMM.Test.GUI
             {
                 if (MainWindow != null)
                 {
-                    MessageBox.Show(MainWindow, s);
+                    MessageBox.Show(MainWindow, $" Creating {s}");
                 }
 
                 return true;
+            };
+
+            cmmWrapper.OpenCreatingRtpEvent += s =>
+            {
+                if (MainWindow != null)
+                {
+                    MessageBox.Show(MainWindow, $" Creating Rrp {s}");
+                }
             };
 
             _cmmTestModel = CmmTestModelHelper.CreateFromIni(cmmWrapper);

@@ -7,7 +7,8 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
     public class DummyCmmWrapper : ICmmWrapper
     {
         public event Func<IEnumerable<ICmmFormatProperty>> OnGetCreateConvertersEvent;
-        public event Func<string, bool> DoCreateEvent; 
+        public event Func<string, bool> DoCreateEvent;
+        public event Action<string> OpenCreatingRtpEvent;
 
         public IEnumerable<ICmmFormatProperty> CreatingConverters
         {
@@ -38,10 +39,28 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
             return this;
         }
 
-        public DummyCmmWrapper WithDoCreateEvent(bool converters)
+        public DummyCmmWrapper WithDoCreate(bool converters)
         {
             DoCreateEvent += (s) => converters;
             return this;
+        }
+
+        public DummyCmmWrapper WithOpenCreatingRtp(Action<string> action)
+        {
+            OpenCreatingRtpEvent += action;
+            return this;
+        }
+
+        public void OpenCreatingRtp(string converterName)
+        {
+            if (OpenCreatingRtpEvent != null)
+            {
+                OpenCreatingRtpEvent(converterName);
+            }
+            else
+            {
+                throw new Exception($"Method {nameof(OpenCreatingRtp)} was not defined");
+            }
         }
 
         public static DummyCmmWrapper CreateTestCmmWrapper()
@@ -56,7 +75,7 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
                 new DummyCmmFormatProperty().WithName("Tdx").WithDisplayName("Tdx Converter")
             };
 
-            cmmWrapper.WithGetCreateConverters(formatProperties).WithDoCreateEvent(true);
+            cmmWrapper.WithGetCreateConverters(formatProperties).WithDoCreate(true).WithOpenCreatingRtp(convertorName => { /* Default implementation */ });
 
             return cmmWrapper;
         }

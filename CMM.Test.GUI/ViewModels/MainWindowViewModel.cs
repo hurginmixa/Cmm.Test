@@ -12,7 +12,7 @@ namespace CMM.Test.GUI.ViewModels
         {
             _creatingTabViewModel = new CreatingTabViewModel(model.CreatingTabModel, fileSystem);
 
-            _importUpdateViewModel = new ImportUpdateViewModel(model.ImportUpdateTabModel);
+            _importUpdateViewModel = new ImportUpdateViewModel(model.ImportUpdateTabModel, fileSystem);
         }
 
         public CreatingTabViewModel CreatingTabViewModel => _creatingTabViewModel;
