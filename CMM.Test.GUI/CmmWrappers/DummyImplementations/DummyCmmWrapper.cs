@@ -52,6 +52,7 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
             {
                 new DummyCmmFormatProperty().WithName("Klarf").WithDisplayName("Klarf Converter"),
                 new DummyCmmFormatProperty().WithName("Sinf").WithDisplayName("Sinf Converter"),
+                new DummyCmmFormatProperty().WithName("Sinf3D").WithDisplayName("Sinf3D Converter"),
                 new DummyCmmFormatProperty().WithName("Tdx").WithDisplayName("Tdx Converter")
             };
 
