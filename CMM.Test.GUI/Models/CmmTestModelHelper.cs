@@ -49,9 +49,9 @@ namespace CMM.Test.GUI.Models
                 // Save ImportUpdateTabModel properties
                 if (model.ImportUpdateTabModel != null)
                 {
-                    // Here you can add code to save ImportUpdateTabModel properties
-                    // Example:
-                    // IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "PropertyName", configPath, model.ImportUpdateTabModel.PropertyName);
+                    // Save ResultPath and UsingResultPath properties
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "ResultPath", configPath, (string)model.ImportUpdateTabModel.ResultPath ?? string.Empty);
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "UsingResultPath", configPath, model.ImportUpdateTabModel.UsingResultPath?.Value ?? false);
                 }
             }
             catch (Exception ex)
@@ -146,13 +146,18 @@ namespace CMM.Test.GUI.Models
                 // Load ImportUpdateTabModel properties
                 if (model.ImportUpdateTabModel != null)
                 {
-                    // Here you can add code to load ImportUpdateTabModel properties
-                    // Example:
-                    // string propertyValue = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "PropertyName", configPath, defaultValue);
-                    // if (propertyValue != null)
-                    // {
-                    //     model.ImportUpdateTabModel.PropertyName = propertyValue;
-                    // }
+                    // Load ResultPath property
+                    string resultPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "ResultPath", configPath, string.Empty);
+                    if (!string.IsNullOrEmpty(resultPath) && model.ImportUpdateTabModel.ResultPath != null)
+                    {
+                        model.ImportUpdateTabModel.ResultPath = resultPath;
+                    }
+
+                    // Load UsingResultPath property
+                    if (model.ImportUpdateTabModel.UsingResultPath != null)
+                    {
+                        model.ImportUpdateTabModel.UsingResultPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "UsingResultPath", configPath, false);
+                    }
                 }
 
                 return model;

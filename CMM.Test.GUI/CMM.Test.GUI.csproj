@@ -75,6 +75,12 @@
     <Compile Include="ViewModels\ImportUpdateViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SelectFolderViewModel.cs" />
+    <Compile Include="Views\CreatingMapControl.xaml.cs">
+      <DependentUpon>CreatingMapControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImportUpdateControl.xaml.cs">
+      <DependentUpon>ImportUpdateControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>Views\MainWindow.xaml</DependentUpon>
     </Compile>
@@ -85,6 +91,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\CreatingMapControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ImportUpdateControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
