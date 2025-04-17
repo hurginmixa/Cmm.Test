@@ -4,8 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CMM.Test.GUI.Views"
+             xmlns:viewModels="clr-namespace:CMM.Test.GUI.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="530">
+             d:DesignHeight="550" d:DesignWidth="530"
+             d:DataContext="{d:DesignInstance Type=viewModels:ImportUpdateViewModel}">
+
     <StackPanel Orientation="Vertical" Margin="10" Background="White">
         <!-- LotId -->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">

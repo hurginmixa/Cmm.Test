@@ -9,11 +9,15 @@ namespace CMM.Test.GUI.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(MainWindowViewModel mainWindowViewModel)
+        public MainWindow()
         {
             InitializeComponent();
+        }
 
-            DataContext = mainWindowViewModel;
+        public MainWindowViewModel ViewModel
+        {
+            get => (MainWindowViewModel)DataContext;
+            set => DataContext = value;
         }
     }
 }

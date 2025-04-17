@@ -43,10 +43,11 @@ namespace CMM.Test.GUI
 
             DummyFileSystemWrapper fileSystem = DummyFileSystemWrapper.CreateTestFileSystem(_cmmTestModel.BaseResultsPath);
 
-            MainWindowViewModel viewModel = new MainWindowViewModel(_cmmTestModel, fileSystem);
-            
-            MainWindow window = new MainWindow(viewModel);
-            
+            MainWindow window = new MainWindow
+            {
+                ViewModel = new MainWindowViewModel(_cmmTestModel, fileSystem)
+            };
+
             window.Show();
 
             MainWindow = window;
