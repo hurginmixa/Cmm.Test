@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using CMM.Test.GUI.ViewModels;
 
 namespace CMM.Test.GUI.Views
 {

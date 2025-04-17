@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CMM.Test.GUI.Views"
+        xmlns:local="clr-namespace:CMM.Test.GUI.Views" 
+        xmlns:viewModels="clr-namespace:CMM.Test.GUI.ViewModels"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
-        Title="MainWindow">
+        Title="MainWindow"
+        d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <StackPanel Orientation="Vertical" Margin="5">
         <TabControl x:Name="DynamicTabControl" Margin="10" Height="600" Width="550" >
             <TabControl.Resources>
