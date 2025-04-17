@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -47,6 +47,12 @@ namespace CMM.Test.GUI.ViewModels
         {
             get => _importUpdateTabModel.ResultPath;
             set => SetField(_importUpdateTabModel.ResultPath, value);
+        }
+
+        public bool UsingResultPath
+        {
+            get => _importUpdateTabModel.UsingResultPath;
+            set => SetField(_importUpdateTabModel.UsingResultPath, value);
         }
     }
 }

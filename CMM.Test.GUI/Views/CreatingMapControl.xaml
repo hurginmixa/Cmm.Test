@@ -1,0 +1,67 @@
+<UserControl x:Class="CMM.Test.GUI.Views.CreatingMapControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CMM.Test.GUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="530">
+    <StackPanel Orientation="Vertical" Margin="10" Background="White">
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <TextBlock Text="Job Name" Width="80" />
+            <TextBox Text="{Binding JobName}" Width="300"  IsReadOnly="True"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <TextBlock Text="Setup Name" Width="80" />
+            <TextBox Text="{Binding SetupName}" Width="300" IsReadOnly="True" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <TextBlock Text="Lot" Width="80" />
+            <TextBox Text="{Binding LotName}" Width="300" IsReadOnly="True" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <TextBlock Text="Wafer Id" Width="80" />
+            <TextBox Text="{Binding WaferId}" Width="300" IsReadOnly="True" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <Button Content="Load Res Map" Margin="0,0,10,0" Command="{Binding SetResultPathCommand}" Padding="15,2" />
+            <Button Content="Check Result" Margin="0,0,10,0" Command="{Binding CheckResultCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Padding="15,2" />
+            <Button Content="Import Result" Command="{Binding ImportResultCommand}" Padding="15,2" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <CheckBox Content="Not Show Map" IsChecked="{Binding NotShowMap}" Margin="0,0,20,0"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,20" IsEnabled="{Binding IsResultLoaded}">
+            <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+                <TextBlock Text="Destination for :" FontWeight="Bold" FontSize="15"/>
+                <ListBox ItemsSource="{Binding ConverterNameList}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedConverter}" Height="100" Width="300" />
+                <TextBlock Text="Search Converter"/>
+                <TextBox Text="{Binding ConverterListFilter, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="5">
+                <CheckBox Content="Create On Internal Bins" IsChecked="{Binding CreateOnInternalBins}" Margin="0,0,0,5"/>
+                <CheckBox Content="Assume AutoCycle" IsChecked="{Binding AssumeAutoCycle}" Margin="0,0,0,5"/>
+                <CheckBox Content="Assume Verification" IsChecked="{Binding AssumeVerification}" Margin="0,0,0,5"/>
+                <CheckBox Content="Import After Create" IsChecked="{Binding ImportAfterCreate}" Margin="0,0,0,5"/>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Export flat position" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox Width="100" ItemsSource="{Binding ExportPositions}" SelectedItem="{Binding SelectedExportPosition}"/>
+                </StackPanel>
+
+                <Button Content="RTP" Command="{Binding RTPCommand}" Width="80" HorizontalAlignment="Left" Margin="0,10,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <TextBox Text="{Binding Notes}" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="100" Margin="0,0,0,10" />
+
+        <Button Content="Create . . ." Name="CreateButton" Command="{Binding CreateCommand}" IsEnabled="{Binding CanCreate}" Height="30" Margin="0,0,0,0" Width="220" HorizontalAlignment="Left"/>
+    </StackPanel>
+</UserControl>

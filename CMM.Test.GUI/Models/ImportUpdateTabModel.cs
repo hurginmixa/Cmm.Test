@@ -1,4 +1,4 @@
-﻿using CMM.Test.GUI.CmmWrappers;
+using CMM.Test.GUI.CmmWrappers;
 using CMM.Test.GUI.Tools;
 
 namespace CMM.Test.GUI.Models
@@ -10,9 +10,12 @@ namespace CMM.Test.GUI.Models
             CmmTestModel = cmmTestModel;
             CmmWrapper = cmmWrapper;
             ResultPath = "";
+            UsingResultPath = false;
         }
 
         public RefProperty<string> ResultPath { get; set; }
+
+        public RefProperty<bool> UsingResultPath { get; set; }
 
         public CmmTestModel CmmTestModel { get; }
         
