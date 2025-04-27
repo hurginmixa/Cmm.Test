@@ -10,7 +10,7 @@
         Title="MainWindow"
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <StackPanel Orientation="Vertical" Margin="5">
-        <TabControl x:Name="DynamicTabControl" Margin="10" Height="650" Width="570" >
+        <TabControl x:Name="DynamicTabControl" Margin="10" Height="700" Width="570" >
             <TabControl.Resources>
                 <Style TargetType="ContentPresenter">
                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
