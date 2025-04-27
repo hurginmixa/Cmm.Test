@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -15,6 +17,10 @@ namespace CMM.Test.GUI.ViewModels
     {
         private readonly ImportUpdateTabModel _importUpdateTabModel;
         private readonly IFileSystemWrapper _fileSystem;
+        private readonly ObservableCollection<CmmFormatPropertyViewModel> _converterList;
+        private readonly List<CmmFormatPropertyViewModel> _allConverters;
+        private CmmFormatPropertyViewModel _selectedConverter;
+        private string _converterListFilter;
 
         public ImportUpdateViewModel(ImportUpdateTabModel importUpdateTabModel, IFileSystemWrapper fileSystem)
         {
@@ -24,6 +30,30 @@ namespace CMM.Test.GUI.ViewModels
             SetResultPathCommand = new RelayCommand(OnCheckResult);
             SelectDataInPathCommand = new RelayCommand(SelectDataInPath);
             SelectDataOutPathCommand = new RelayCommand(SelectDataOutPath);
+            
+            // Инициализация коллекций конвертеров
+            _allConverters = importUpdateTabModel.CmmWrapper.ImportUpdateConverters.Select(r => new CmmFormatPropertyViewModel(r)).ToList();
+            _converterList = new ObservableCollection<CmmFormatPropertyViewModel>(_allConverters);
+            _selectedConverter = _allConverters.FirstOrDefault(c => c.Name == importUpdateTabModel.SelectedConverterName.Value);
+            _converterListFilter = string.Empty;
+            
+            // Добавить обработку свойств
+            PropertyChanged += (sender, args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(SelectedConverter):
+                        if (SelectedConverter != null)
+                        {
+                            _importUpdateTabModel.SelectedConverterName.Value = SelectedConverter.Name;
+                        }
+                        break;
+                        
+                    case nameof(ConverterListFilter):
+                        FilterConverterList();
+                        break;
+                }
+            };
         }
 
         private void OnCheckResult(object o)
@@ -134,6 +164,51 @@ namespace CMM.Test.GUI.ViewModels
         {
             get => _importUpdateTabModel.NotShowMap;
             set => SetField(_importUpdateTabModel.NotShowMap, value);
+        }
+        
+        public ObservableCollection<CmmFormatPropertyViewModel> ConverterList => _converterList;
+
+        public CmmFormatPropertyViewModel SelectedConverter
+        {
+            get => _selectedConverter;
+            set => SetField(ref _selectedConverter, value);
+        }
+
+        public string ConverterListFilter
+        {
+            get => _converterListFilter;
+            set => SetField(ref _converterListFilter, value);
+        }
+        
+        private void FilterConverterList()
+        {
+            _converterList.Clear();
+
+            if (string.IsNullOrWhiteSpace(_converterListFilter))
+            {
+                foreach (var converter in _allConverters)
+                {
+                    _converterList.Add(converter);
+                }
+                return;
+            }
+
+            var searchText = _converterListFilter.ToLower();
+
+            var filteredList = _allConverters
+                .Where(c => c.Name.ToLower().Contains(searchText) || (c.DisplayName != null && c.DisplayName.ToLower().Contains(searchText)))
+                .ToList();
+
+            foreach (var converter in filteredList)
+            {
+                _converterList.Add(converter);
+            }
+
+            // Если есть совпадения и нет выбранного элемента, выбираем первый
+            if (filteredList.Any() && (_selectedConverter == null || !filteredList.Contains(_selectedConverter)))
+            {
+                SelectedConverter = filteredList.First();
+            }
         }
     }
 }
