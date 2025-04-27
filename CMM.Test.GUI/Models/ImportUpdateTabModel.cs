@@ -15,6 +15,8 @@ namespace CMM.Test.GUI.Models
             WaferId = "";
             WaferMapMask = "";
             SubmapId = "";
+            DataInPath = "";
+            DataOutPath = "";
         }
 
         public RefProperty<string> ResultPath { get; set; }
@@ -28,6 +30,10 @@ namespace CMM.Test.GUI.Models
         public RefProperty<string> WaferMapMask { get; set; }
 
         public RefProperty<string> SubmapId { get; set; }
+
+        public RefProperty<string> DataInPath { get; set; }
+
+        public RefProperty<string> DataOutPath { get; set; }
 
         public CmmTestModel CmmTestModel { get; }
         

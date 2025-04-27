@@ -59,6 +59,8 @@ namespace CMM.Test.GUI.Models
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "WaferId", configPath, (string)model.ImportUpdateTabModel.WaferId ?? string.Empty);
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "WaferMapMask", configPath, (string)model.ImportUpdateTabModel.WaferMapMask ?? string.Empty);
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "SubmapId", configPath, (string)model.ImportUpdateTabModel.SubmapId ?? string.Empty);
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "DataInPath", configPath, (string)model.ImportUpdateTabModel.DataInPath ?? string.Empty);
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "DataOutPath", configPath, (string)model.ImportUpdateTabModel.DataOutPath ?? string.Empty);
                 }
             }
             catch (Exception ex)
@@ -194,6 +196,20 @@ namespace CMM.Test.GUI.Models
                     if (!string.IsNullOrEmpty(submapId) && model.ImportUpdateTabModel.SubmapId != null)
                     {
                         model.ImportUpdateTabModel.SubmapId = submapId;
+                    }
+                    
+                    // Load DataInPath property
+                    string dataInPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "DataInPath", configPath, string.Empty);
+                    if (!string.IsNullOrEmpty(dataInPath) && model.ImportUpdateTabModel.DataInPath != null)
+                    {
+                        model.ImportUpdateTabModel.DataInPath = dataInPath;
+                    }
+                    
+                    // Load DataOutPath property
+                    string dataOutPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "DataOutPath", configPath, string.Empty);
+                    if (!string.IsNullOrEmpty(dataOutPath) && model.ImportUpdateTabModel.DataOutPath != null)
+                    {
+                        model.ImportUpdateTabModel.DataOutPath = dataOutPath;
                     }
                 }
 
