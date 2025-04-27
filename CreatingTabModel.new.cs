@@ -5,7 +5,7 @@ namespace CMM.Test.GUI.Models
 {
     public class CreatingTabModel
     {
-        public enum eExportFlatPosition
+        public enum ExportPosition
         {
             Botom,
             Top,
@@ -30,7 +30,7 @@ namespace CMM.Test.GUI.Models
             AssumeVerification = true;
             NotShowMap = false;
             ImportAfterCreate = true;
-            ExportFlatPosition = eExportFlatPosition.Botom;
+            ExportFlatPosition = ExportPosition.Botom;
         }
 
         public CmmTestModel CmmTestModel { get; }
@@ -57,10 +57,10 @@ namespace CMM.Test.GUI.Models
         
         public RefProperty<bool> ImportAfterCreate { get; set; }
 
-        public RefProperty<eExportFlatPosition> ExportFlatPosition { get; set; }
-
         public void DoCreate() => CmmWrapper.DoCreate(ConverterName);
 
         public void OpenRtp() => CmmWrapper.OpenCreatingRtp(ConverterName);     
+
+        public ExportPosition ExportFlatPosition { get; set; }
     }
 }

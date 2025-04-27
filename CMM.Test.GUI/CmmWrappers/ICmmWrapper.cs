@@ -13,5 +13,7 @@ namespace CMM.Test.GUI.CmmWrappers
         bool DoCreate(string converterName);
         
         void OpenCreatingRtp(string converterName);
+
+        IEnumerable<ICmmFormatProperty> ImportUpdateConverters { get; }
     }
 }

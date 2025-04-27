@@ -26,7 +26,7 @@ namespace CMM.Test.GUI.ViewModels
         private bool _isResultLoaded;
         private bool _isReadyToCreate;
         private string _converterListFilter;
-        private CreatingTabModel.eExportFlatPosition _selectedExportFlatPosition;
+        private CreatingTabModel.ExportPosition _selectedExportPosition;
 
         public CreatingTabViewModel(CreatingTabModel model, IFileSystemWrapper fileSystem)
         {
@@ -40,7 +40,7 @@ namespace CMM.Test.GUI.ViewModels
 
             _isResultLoaded = false;
             _isReadyToCreate = false;
-            _selectedExportFlatPosition = model.ExportFlatPosition;
+            _selectedExportPosition = model.ExportFlatPosition;
 
             LoadResMapCommand = new RelayCommand(o => OnLoadResult(o), _ => IsDataCorrect && fileSystem.FileExists(GetScanLogIniPath()));
 
@@ -63,8 +63,8 @@ namespace CMM.Test.GUI.ViewModels
                         CheckReadyToCreate();
                         break;
                         
-                    case nameof(SelectedExportFlatPosition):
-                        _model.ExportFlatPosition = SelectedExportFlatPosition;
+                    case nameof(SelectedExportPosition):
+                        _model.ExportFlatPosition = SelectedExportPosition;
                         break;
 
                     case nameof(ConverterListFilter):
@@ -85,12 +85,21 @@ namespace CMM.Test.GUI.ViewModels
 
         public ICommand RTPCommand { get; }
 
-        public IEnumerable<CreatingTabModel.eExportFlatPosition> ExportFlatPositions => Enum.GetValues(typeof(CreatingTabModel.eExportFlatPosition)).Cast<CreatingTabModel.eExportFlatPosition>();
+        public IEnumerable<CreatingTabModel.ExportPosition> ExportPositions => 
+            Enum.GetValues(typeof(CreatingTabModel.ExportPosition)).Cast<CreatingTabModel.ExportPosition>();
 
-        public CreatingTabModel.eExportFlatPosition SelectedExportFlatPosition
+        public CreatingTabModel.ExportPosition SelectedExportPosition
         {
-            get => _model.ExportFlatPosition;
-            set => SetField(_model.ExportFlatPosition, value);
+            get => _selectedExportPosition;
+            set
+            {
+                if (_selectedExportPosition != value)
+                {
+                    _selectedExportPosition = value;
+                    _model.ExportFlatPosition = value;
+                    NotifyPropertyChanged();
+                }
+            }
         }
 
         public bool IsResultLoaded
