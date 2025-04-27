@@ -30,7 +30,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-            <Button Content="Load Res Map" Margin="0,0,10,0" Command="{Binding SetResultPathCommand}" Padding="15,2" />
+            <Button Content="Load Res Map" Margin="0,0,10,0" Command="{Binding LoadResMapCommand}" Padding="15,2" />
             <Button Content="Check Result" Margin="0,0,10,0" Command="{Binding CheckResultCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Padding="15,2" />
             <Button Content="Import Result" Command="{Binding ImportResultCommand}" Padding="15,2" />
         </StackPanel>
