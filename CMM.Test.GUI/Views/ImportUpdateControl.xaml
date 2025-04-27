@@ -119,8 +119,8 @@
                     </StackPanel>
                     <StackPanel Margin="20,0,0,0">
                         <CheckBox Content="In Verification" IsChecked="{Binding InVerification}" Margin="0,5" />
-                        <CheckBox Content="Not Show Map" IsChecked="{Binding NotShowMap}" Margin="0,5" />
-                        <Button Content="Stresse Test" Width="100" Command="{Binding StressTestCommand}" IsEnabled="False" />
+                        <CheckBox Content="Not Show Map Created Map" IsChecked="{Binding NotShowMap}" Margin="0,5" />
+                        <Button Content="Stresse Test" Width="100" Command="{Binding StressTestCommand}" IsEnabled="False" HorizontalAlignment="Left" Margin="2.5,10,0,0" />
                     </StackPanel>
                 </StackPanel>
 
