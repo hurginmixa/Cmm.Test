@@ -19,6 +19,7 @@ namespace CMM.Test.GUI.Models
             DataOutPath = "";
             InVerification = false;
             NotShowMap = false;
+            SelectedConverterName = "";
         }
 
         public RefProperty<string> ResultPath { get; set; }
@@ -40,6 +41,8 @@ namespace CMM.Test.GUI.Models
         public RefProperty<bool> InVerification { get; set; }
 
         public RefProperty<bool> NotShowMap { get; set; }
+
+        public RefProperty<string> SelectedConverterName { get; set; }
 
         public CmmTestModel CmmTestModel { get; }
         

@@ -6,10 +6,31 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
 {
     public class DummyCmmWrapper : ICmmWrapper
     {
-        public event Func<IEnumerable<ICmmFormatProperty>> OnImportUpdateConvertersEvent;
         public event Func<IEnumerable<ICmmFormatProperty>> OnGetCreateConvertersEvent;
+        public event Func<IEnumerable<ICmmFormatProperty>> OnGetImportUpdateConvertersEvent;
         public event Func<string, bool> DoCreateEvent;
         public event Action<string> OpenCreatingRtpEvent;
+
+        public static DummyCmmWrapper CreateTestCmmWrapper()
+        {
+            DummyCmmWrapper cmmWrapper = new DummyCmmWrapper();
+
+            List<DummyCmmFormatProperty> formatProperties = new List<DummyCmmFormatProperty>
+            {
+                new DummyCmmFormatProperty().WithName("Klarf").WithDisplayName("Klarf Converter"),
+                new DummyCmmFormatProperty().WithName("Sinf").WithDisplayName("Sinf Converter"),
+                new DummyCmmFormatProperty().WithName("Sinf3D").WithDisplayName("Sinf3D Converter"),
+                new DummyCmmFormatProperty().WithName("Tdx").WithDisplayName("Tdx Converter")
+            };
+
+            cmmWrapper
+                .WithGetCreateConverters(formatProperties)
+                .WithGetImportUpdateConverters(formatProperties)
+                .WithDoCreate(true)
+                .WithOpenCreatingRtp(convertorName => { /* Default implementation */ });
+
+            return cmmWrapper;
+        }
 
         public IEnumerable<ICmmFormatProperty> CreatingConverters
         {
@@ -34,24 +55,6 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
             throw new Exception($"Property {nameof(DoCreateEvent)} was not defined");
         }
 
-        public DummyCmmWrapper WithGetCreateConverters(IEnumerable<ICmmFormatProperty> converters)
-        {
-            OnGetCreateConvertersEvent += () => converters;
-            return this;
-        }
-
-        public DummyCmmWrapper WithDoCreate(bool converters)
-        {
-            DoCreateEvent += (s) => converters;
-            return this;
-        }
-
-        public DummyCmmWrapper WithOpenCreatingRtp(Action<string> action)
-        {
-            OpenCreatingRtpEvent += action;
-            return this;
-        }
-
         public void OpenCreatingRtp(string converterName)
         {
             if (OpenCreatingRtpEvent != null)
@@ -68,30 +71,37 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
         {
             get
             {
-                if (OnImportUpdateConvertersEvent != null)
+                if (OnGetImportUpdateConvertersEvent != null)
                 {
-                    return OnImportUpdateConvertersEvent();
+                    return OnGetImportUpdateConvertersEvent();
                 }
 
-                throw new Exception($"Property {nameof(OnImportUpdateConvertersEvent)} was not defined");
+                throw new Exception($"Property {nameof(OnGetImportUpdateConvertersEvent)} was not defined");
             }
         }
 
-        public static DummyCmmWrapper CreateTestCmmWrapper()
+        public DummyCmmWrapper WithGetCreateConverters(IEnumerable<ICmmFormatProperty> converters)
         {
-            DummyCmmWrapper cmmWrapper = new DummyCmmWrapper();
+            OnGetCreateConvertersEvent += () => converters;
+            return this;
+        }
 
-            List<DummyCmmFormatProperty> formatProperties = new List<DummyCmmFormatProperty>
-            {
-                new DummyCmmFormatProperty().WithName("Klarf").WithDisplayName("Klarf Converter"),
-                new DummyCmmFormatProperty().WithName("Sinf").WithDisplayName("Sinf Converter"),
-                new DummyCmmFormatProperty().WithName("Sinf3D").WithDisplayName("Sinf3D Converter"),
-                new DummyCmmFormatProperty().WithName("Tdx").WithDisplayName("Tdx Converter")
-            };
+        public DummyCmmWrapper WithGetImportUpdateConverters(IEnumerable<ICmmFormatProperty> converters)
+        {
+            OnGetImportUpdateConvertersEvent += () => converters;
+            return this;
+        }
 
-            cmmWrapper.WithGetCreateConverters(formatProperties).WithDoCreate(true).WithOpenCreatingRtp(convertorName => { /* Default implementation */ });
+        public DummyCmmWrapper WithDoCreate(bool converters)
+        {
+            DoCreateEvent += (s) => converters;
+            return this;
+        }
 
-            return cmmWrapper;
+        public DummyCmmWrapper WithOpenCreatingRtp(Action<string> action)
+        {
+            OpenCreatingRtpEvent += action;
+            return this;
         }
     }
 }
