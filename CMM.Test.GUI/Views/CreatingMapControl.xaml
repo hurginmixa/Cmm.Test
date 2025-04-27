@@ -55,7 +55,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Export flat position" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                    <ComboBox Width="100" ItemsSource="{Binding ExportPositions}" SelectedItem="{Binding SelectedExportPosition}"/>
+                    <ComboBox Width="100" ItemsSource="{Binding ExportFlatPositions}" SelectedItem="{Binding SelectedExportFlatPosition}"/>
                 </StackPanel>
 
                 <Button Content="RTP" Command="{Binding RTPCommand}" Width="80" HorizontalAlignment="Left" Margin="0,10,0,0"/>

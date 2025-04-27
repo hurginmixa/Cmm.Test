@@ -10,6 +10,8 @@ namespace CMM.Test.GUI.CmmWrappers
         
         public void OpenCreatingRtp(string converterName) => throw new System.NotImplementedException();
 
+        public IEnumerable<ICmmFormatProperty> ImportUpdateConverters => throw new System.NotImplementedException();
+
         public void OpenCreatingRtp() => throw new System.NotImplementedException();
     }
 }

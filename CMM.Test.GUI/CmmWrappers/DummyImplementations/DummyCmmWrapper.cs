@@ -6,6 +6,7 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
 {
     public class DummyCmmWrapper : ICmmWrapper
     {
+        public event Func<IEnumerable<ICmmFormatProperty>> OnImportUpdateConvertersEvent;
         public event Func<IEnumerable<ICmmFormatProperty>> OnGetCreateConvertersEvent;
         public event Func<string, bool> DoCreateEvent;
         public event Action<string> OpenCreatingRtpEvent;
@@ -60,6 +61,19 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
             else
             {
                 throw new Exception($"Method {nameof(OpenCreatingRtp)} was not defined");
+            }
+        }
+
+        public IEnumerable<ICmmFormatProperty> ImportUpdateConverters
+        {
+            get
+            {
+                if (OnImportUpdateConvertersEvent != null)
+                {
+                    return OnImportUpdateConvertersEvent();
+                }
+
+                throw new Exception($"Property {nameof(OnImportUpdateConvertersEvent)} was not defined");
             }
         }
 

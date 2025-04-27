@@ -44,6 +44,7 @@ namespace CMM.Test.GUI.Models
                     IniFileHelper.PutIni(CREATING_TAB_SECTION, "AssumeVerification", configPath, model.CreatingTabModel.AssumeVerification?.Value ?? false);
                     IniFileHelper.PutIni(CREATING_TAB_SECTION, "NotShowMap", configPath, model.CreatingTabModel.NotShowMap?.Value ?? false);
                     IniFileHelper.PutIni(CREATING_TAB_SECTION, "ImportAfterCreate", configPath, model.CreatingTabModel.ImportAfterCreate?.Value ?? false);
+                    IniFileHelper.PutIni(CREATING_TAB_SECTION, "ExportFlatPosition", configPath, (int)model.CreatingTabModel.ExportFlatPosition.Value);
                 }
 
                 // Save ImportUpdateTabModel properties
@@ -52,6 +53,12 @@ namespace CMM.Test.GUI.Models
                     // Save ResultPath and UsingResultPath properties
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "ResultPath", configPath, (string)model.ImportUpdateTabModel.ResultPath ?? string.Empty);
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "UsingResultPath", configPath, model.ImportUpdateTabModel.UsingResultPath?.Value ?? false);
+                    
+                    // Save new properties
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "LotId", configPath, (string)model.ImportUpdateTabModel.LotId ?? string.Empty);
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "WaferId", configPath, (string)model.ImportUpdateTabModel.WaferId ?? string.Empty);
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "WaferMapMask", configPath, (string)model.ImportUpdateTabModel.WaferMapMask ?? string.Empty);
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "SubmapId", configPath, (string)model.ImportUpdateTabModel.SubmapId ?? string.Empty);
                 }
             }
             catch (Exception ex)
@@ -141,6 +148,11 @@ namespace CMM.Test.GUI.Models
                     {
                         model.CreatingTabModel.ImportAfterCreate = IniFileHelper.GetIni(CREATING_TAB_SECTION, "ImportAfterCreate", configPath, true);
                     }
+
+                    if (model.CreatingTabModel.ExportFlatPosition != null)
+                    {
+                        model.CreatingTabModel.ExportFlatPosition = (CreatingTabModel.eExportFlatPosition)IniFileHelper.GetIni(CREATING_TAB_SECTION, "ExportFlatPosition", configPath, 0);
+                    }
                 }
 
                 // Load ImportUpdateTabModel properties
@@ -157,6 +169,31 @@ namespace CMM.Test.GUI.Models
                     if (model.ImportUpdateTabModel.UsingResultPath != null)
                     {
                         model.ImportUpdateTabModel.UsingResultPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "UsingResultPath", configPath, false);
+                    }
+                    
+                    // Load new properties
+                    string lotId = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "LotId", configPath, string.Empty);
+                    if (!string.IsNullOrEmpty(lotId) && model.ImportUpdateTabModel.LotId != null)
+                    {
+                        model.ImportUpdateTabModel.LotId = lotId;
+                    }
+                    
+                    string waferIdImport = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "WaferId", configPath, string.Empty);
+                    if (!string.IsNullOrEmpty(waferIdImport) && model.ImportUpdateTabModel.WaferId != null)
+                    {
+                        model.ImportUpdateTabModel.WaferId = waferIdImport;
+                    }
+                    
+                    string waferMapMask = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "WaferMapMask", configPath, string.Empty);
+                    if (!string.IsNullOrEmpty(waferMapMask) && model.ImportUpdateTabModel.WaferMapMask != null)
+                    {
+                        model.ImportUpdateTabModel.WaferMapMask = waferMapMask;
+                    }
+                    
+                    string submapId = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "SubmapId", configPath, string.Empty);
+                    if (!string.IsNullOrEmpty(submapId) && model.ImportUpdateTabModel.SubmapId != null)
+                    {
+                        model.ImportUpdateTabModel.SubmapId = submapId;
                     }
                 }
 

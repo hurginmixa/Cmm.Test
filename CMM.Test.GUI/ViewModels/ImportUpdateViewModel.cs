@@ -54,5 +54,29 @@ namespace CMM.Test.GUI.ViewModels
             get => _importUpdateTabModel.UsingResultPath;
             set => SetField(_importUpdateTabModel.UsingResultPath, value);
         }
+
+        public string LotId
+        {
+            get => _importUpdateTabModel.LotId;
+            set => SetField(_importUpdateTabModel.LotId, value);
+        }
+
+        public string WaferId
+        {
+            get => _importUpdateTabModel.WaferId;
+            set => SetField(_importUpdateTabModel.WaferId, value);
+        }
+
+        public string WaferMapMask
+        {
+            get => _importUpdateTabModel.WaferMapMask;
+            set => SetField(_importUpdateTabModel.WaferMapMask, value);
+        }
+
+        public string SubmapId
+        {
+            get => _importUpdateTabModel.SubmapId;
+            set => SetField(_importUpdateTabModel.SubmapId, value);
+        }
     }
 }

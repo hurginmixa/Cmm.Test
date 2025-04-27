@@ -11,11 +11,23 @@ namespace CMM.Test.GUI.Models
             CmmWrapper = cmmWrapper;
             ResultPath = "";
             UsingResultPath = false;
+            LotId = "";
+            WaferId = "";
+            WaferMapMask = "";
+            SubmapId = "";
         }
 
         public RefProperty<string> ResultPath { get; set; }
 
         public RefProperty<bool> UsingResultPath { get; set; }
+
+        public RefProperty<string> LotId { get; set; }
+
+        public RefProperty<string> WaferId { get; set; }
+
+        public RefProperty<string> WaferMapMask { get; set; }
+
+        public RefProperty<string> SubmapId { get; set; }
 
         public CmmTestModel CmmTestModel { get; }
         
