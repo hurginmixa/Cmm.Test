@@ -9,11 +9,11 @@ namespace CMM.Test.GUI.CmmWrappers
     public interface ICmmWrapper
     {
         IEnumerable<ICmmFormatProperty> CreatingConverters { get; }
+
+        IEnumerable<ICmmFormatProperty> ImportUpdateConverters { get; }
         
         bool DoCreate(string converterName);
         
         void OpenCreatingRtp(string converterName);
-
-        IEnumerable<ICmmFormatProperty> ImportUpdateConverters { get; }
     }
 }

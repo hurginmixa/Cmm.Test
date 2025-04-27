@@ -26,7 +26,6 @@ namespace CMM.Test.GUI.ViewModels
         private bool _isResultLoaded;
         private bool _isReadyToCreate;
         private string _converterListFilter;
-        private CreatingTabModel.eExportFlatPosition _selectedExportFlatPosition;
 
         public CreatingTabViewModel(CreatingTabModel model, IFileSystemWrapper fileSystem)
         {
@@ -40,7 +39,6 @@ namespace CMM.Test.GUI.ViewModels
 
             _isResultLoaded = false;
             _isReadyToCreate = false;
-            _selectedExportFlatPosition = model.ExportFlatPosition;
 
             LoadResMapCommand = new RelayCommand(o => OnLoadResult(o), _ => IsDataCorrect && fileSystem.FileExists(GetScanLogIniPath()));
 

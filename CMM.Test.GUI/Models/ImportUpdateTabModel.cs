@@ -17,6 +17,8 @@ namespace CMM.Test.GUI.Models
             SubmapId = "";
             DataInPath = "";
             DataOutPath = "";
+            InVerification = false;
+            NotShowMap = false;
         }
 
         public RefProperty<string> ResultPath { get; set; }
@@ -34,6 +36,10 @@ namespace CMM.Test.GUI.Models
         public RefProperty<string> DataInPath { get; set; }
 
         public RefProperty<string> DataOutPath { get; set; }
+
+        public RefProperty<bool> InVerification { get; set; }
+
+        public RefProperty<bool> NotShowMap { get; set; }
 
         public CmmTestModel CmmTestModel { get; }
         
