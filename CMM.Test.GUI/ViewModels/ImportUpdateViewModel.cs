@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using CMM.Test.GUI.CmmWrappers;
 using CMM.Test.GUI.Models;
@@ -21,6 +22,8 @@ namespace CMM.Test.GUI.ViewModels
             _fileSystem = fileSystem;
 
             SetResultPathCommand = new RelayCommand(OnCheckResult);
+            SelectDataInPathCommand = new RelayCommand(SelectDataInPath);
+            SelectDataOutPathCommand = new RelayCommand(SelectDataOutPath);
         }
 
         private void OnCheckResult(object o)
@@ -42,6 +45,36 @@ namespace CMM.Test.GUI.ViewModels
         }
 
         public ICommand SetResultPathCommand { get; }
+        public ICommand SelectDataInPathCommand { get; }
+        public ICommand SelectDataOutPathCommand { get; }
+        
+        private void SelectDataInPath(object obj)
+        {
+            var dialog = new FolderBrowserDialog();
+            if (!string.IsNullOrEmpty(DataInPath))
+            {
+                dialog.SelectedPath = DataInPath;
+            }
+            
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                DataInPath = dialog.SelectedPath;
+            }
+        }
+
+        private void SelectDataOutPath(object obj)
+        {
+            var dialog = new FolderBrowserDialog();
+            if (!string.IsNullOrEmpty(DataOutPath))
+            {
+                dialog.SelectedPath = DataOutPath;
+            }
+            
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                DataOutPath = dialog.SelectedPath;
+            }
+        }
 
         public string ResultPath
         {
@@ -77,6 +110,18 @@ namespace CMM.Test.GUI.ViewModels
         {
             get => _importUpdateTabModel.SubmapId;
             set => SetField(_importUpdateTabModel.SubmapId, value);
+        }
+
+        public string DataInPath
+        {
+            get => _importUpdateTabModel.DataInPath;
+            set => SetField(_importUpdateTabModel.DataInPath, value);
+        }
+
+        public string DataOutPath
+        {
+            get => _importUpdateTabModel.DataOutPath;
+            set => SetField(_importUpdateTabModel.DataOutPath, value);
         }
     }
 }
