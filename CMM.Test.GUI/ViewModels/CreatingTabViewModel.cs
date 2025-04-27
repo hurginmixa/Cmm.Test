@@ -70,9 +70,6 @@ namespace CMM.Test.GUI.ViewModels
                     case nameof(ConverterListFilter):
                         FilterConverterList();
                         break;
-
-                    default:
-                        break;
                 }
             };
         }
