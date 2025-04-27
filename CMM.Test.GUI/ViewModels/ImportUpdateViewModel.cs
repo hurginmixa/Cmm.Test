@@ -123,5 +123,17 @@ namespace CMM.Test.GUI.ViewModels
             get => _importUpdateTabModel.DataOutPath;
             set => SetField(_importUpdateTabModel.DataOutPath, value);
         }
+        
+        public bool InVerification
+        {
+            get => _importUpdateTabModel.InVerification;
+            set => SetField(_importUpdateTabModel.InVerification, value);
+        }
+        
+        public bool NotShowMap
+        {
+            get => _importUpdateTabModel.NotShowMap;
+            set => SetField(_importUpdateTabModel.NotShowMap, value);
+        }
     }
 }

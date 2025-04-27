@@ -61,6 +61,8 @@ namespace CMM.Test.GUI.Models
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "SubmapId", configPath, (string)model.ImportUpdateTabModel.SubmapId ?? string.Empty);
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "DataInPath", configPath, (string)model.ImportUpdateTabModel.DataInPath ?? string.Empty);
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "DataOutPath", configPath, (string)model.ImportUpdateTabModel.DataOutPath ?? string.Empty);
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "InVerification", configPath, model.ImportUpdateTabModel.InVerification?.Value ?? false);
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "NotShowMap", configPath, model.ImportUpdateTabModel.NotShowMap?.Value ?? false);
                 }
             }
             catch (Exception ex)
@@ -210,6 +212,18 @@ namespace CMM.Test.GUI.Models
                     if (!string.IsNullOrEmpty(dataOutPath) && model.ImportUpdateTabModel.DataOutPath != null)
                     {
                         model.ImportUpdateTabModel.DataOutPath = dataOutPath;
+                    }
+                    
+                    // Load InVerification property
+                    if (model.ImportUpdateTabModel.InVerification != null)
+                    {
+                        model.ImportUpdateTabModel.InVerification = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "InVerification", configPath, false);
+                    }
+                    
+                    // Load NotShowMap property
+                    if (model.ImportUpdateTabModel.NotShowMap != null)
+                    {
+                        model.ImportUpdateTabModel.NotShowMap = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "NotShowMap", configPath, false);
                     }
                 }
 
