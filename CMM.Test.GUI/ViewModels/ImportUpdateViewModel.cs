@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using CMM.Test.GUI.CmmWrappers;
 using CMM.Test.GUI.Models;
 using CMM.Test.GUI.Tools;
+using CMM.Test.GUI.Wrappers;
 
 namespace CMM.Test.GUI.ViewModels
 {
@@ -32,7 +32,7 @@ namespace CMM.Test.GUI.ViewModels
             SelectDataOutPathCommand = new RelayCommand(SelectDataOutPath);
             
             // Инициализация коллекций конвертеров
-            _allConverters = importUpdateTabModel.CmmWrapper.ImportUpdateConverters.Select(r => new CmmFormatPropertyViewModel(r)).ToList();
+            _allConverters =  (new [] { CmmFormatPropertyViewModel.SystemDefaultModel() }).Concat(importUpdateTabModel.CmmWrapper.ImportUpdateConverters.Select(CmmFormatPropertyViewModel.NewModel)).ToList();
             _converterList = new ObservableCollection<CmmFormatPropertyViewModel>(_allConverters);
             _selectedConverter = _allConverters.FirstOrDefault(c => c.Name == importUpdateTabModel.SelectedConverterName.Value);
             _converterListFilter = string.Empty;
@@ -66,7 +66,7 @@ namespace CMM.Test.GUI.ViewModels
                 WaferId = ""
             };
 
-            if (!ToolsKid.OpenCheckResultDialog((Window) o, _importUpdateTabModel.CmmTestModel.BaseResultsPath, selectedFolderModel, _fileSystem))
+            if (!ToolsKid.OpenCheckResultDialog((Window) o, _importUpdateTabModel.FileSystemWrapper.BaseResultsPath, selectedFolderModel, _fileSystem))
             {
                 return;
             }
@@ -190,13 +190,14 @@ namespace CMM.Test.GUI.ViewModels
                 {
                     _converterList.Add(converter);
                 }
+
                 return;
             }
 
             var searchText = _converterListFilter.ToLower();
 
             var filteredList = _allConverters
-                .Where(c => c.Name.ToLower().Contains(searchText) || (c.DisplayName != null && c.DisplayName.ToLower().Contains(searchText)))
+                .Where(c => string.IsNullOrWhiteSpace(c.Name) || (c.DisplayName != null && c.DisplayName.ToLower().Contains(searchText)))
                 .ToList();
 
             foreach (var converter in filteredList)

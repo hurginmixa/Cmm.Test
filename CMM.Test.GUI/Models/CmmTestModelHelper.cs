@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using CMM.Test.GUI.CmmWrappers;
+using CMM.Test.GUI.Wrappers;
 using Converters.Tools;
 
 namespace CMM.Test.GUI.Models
@@ -79,9 +79,9 @@ namespace CMM.Test.GUI.Models
         /// <param name="cmmWrapper">ICmmWrapper instance</param>
         /// <param name="filePath">Path to INI file (if not specified, default file is used)</param>
         /// <returns>Filled CmmTestModel instance or null in case of error</returns>
-        public static CmmTestModel CreateFromIni(ICmmWrapper cmmWrapper, string filePath = null)
+        public static CmmTestModel CreateFromIni(ICmmWrapper cmmWrapper, IFileSystemWrapper systemInfoWrapper)
         {
-            string configPath = filePath ?? Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), CONFIG_FILENAME);
+            string configPath = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), CONFIG_FILENAME);
 
             try
             {
@@ -89,11 +89,11 @@ namespace CMM.Test.GUI.Models
                 if (!File.Exists(configPath))
                 {
                     // If file doesn't exist, return model with default settings
-                    return new CmmTestModel(cmmWrapper);
+                    return new CmmTestModel(cmmWrapper, systemInfoWrapper);
                 }
 
                 // Create new model
-                CmmTestModel model = new CmmTestModel(cmmWrapper);
+                CmmTestModel model = new CmmTestModel(cmmWrapper, systemInfoWrapper);
 
                 // Load CreatingTabModel properties
                 if (model.CreatingTabModel != null)

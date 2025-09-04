@@ -5,9 +5,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using CMM.Test.GUI.CmmWrappers;
 using CMM.Test.GUI.Models;
 using CMM.Test.GUI.Tools;
+using CMM.Test.GUI.Wrappers;
 
 namespace CMM.Test.GUI.ViewModels
 {

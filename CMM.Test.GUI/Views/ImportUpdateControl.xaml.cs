@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 using CMM.Test.GUI.ViewModels;
 
@@ -11,6 +12,12 @@ namespace CMM.Test.GUI.Views
         public ImportUpdateControl()
         {
             InitializeComponent();
+        }
+
+        private void ConverterList_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var listBox = sender as ListBox;
+            listBox?.ScrollIntoView(listBox.SelectedItem);
         }
     }
 }

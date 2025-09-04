@@ -56,14 +56,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CmmWrappers\CmmWrapper.cs" />
-    <Compile Include="CmmWrappers\DummyImplementations\DummyFileSystemWrapper.cs" />
-    <Compile Include="CmmWrappers\DummyImplementations\DummyCmmFormatProperty.cs" />
-    <Compile Include="CmmWrappers\DummyImplementations\DummyCmmWrapper.cs" />
-    <Compile Include="CmmWrappers\FileSystemWrapper.cs" />
-    <Compile Include="CmmWrappers\IFileSystemWrapper.cs" />
-    <Compile Include="CmmWrappers\ICmmFormatProperty.cs" />
-    <Compile Include="CmmWrappers\ICmmWrapper.cs" />
+    <Compile Include="Wrappers\DummyImplementations\DummyWrapperImplementations.cs" />
+    <Compile Include="Wrappers\IWrappers.cs" />
+    <Compile Include="Wrappers\RealImplementations\CmmWrapper.cs" />
+    <Compile Include="Wrappers\DummyImplementations\DummyFileSystemWrapper.cs" />
+    <Compile Include="Wrappers\DummyImplementations\DummyCmmFormatProperty.cs" />
+    <Compile Include="Wrappers\DummyImplementations\DummyCmmWrapper.cs" />
+    <Compile Include="Wrappers\RealImplementations\FileSystemWrapper.cs" />
+    <Compile Include="Wrappers\IFileSystemWrapper.cs" />
+    <Compile Include="Wrappers\ICmmFormatProperty.cs" />
+    <Compile Include="Wrappers\ICmmWrapper.cs" />
     <Compile Include="Models\CmmTestModelHelper.cs" />
     <Compile Include="Tools\IConverterNameSource.cs" />
     <Compile Include="Tools\NotifyPropertyHandler.cs" />
@@ -92,6 +94,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Wrappers\WrappersFabric.cs" />
     <Page Include="Views\CreatingMapControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -145,5 +148,6 @@
       <Name>CmmTestModules</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

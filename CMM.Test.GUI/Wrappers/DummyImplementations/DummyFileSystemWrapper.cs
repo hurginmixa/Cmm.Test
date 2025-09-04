@@ -3,15 +3,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
+namespace CMM.Test.GUI.Wrappers.DummyImplementations
 {
     public class DummyFileSystemWrapper : IFileSystemWrapper
     {
+        // Вспомогательный класс для представления файлов и директорий
+        private class VirtualFileSystemNode
+        {
+            public bool IsDirectory { get; set; }
+            public string Name { get; set; }
+            public string Parent { get; set; }
+        }
+
+        public const string FalconScanResultsPath = @"\\mixa7th\c$\Falcon\ScanResults";
+
         // Виртуальная файловая система
         private readonly Dictionary<string, VirtualFileSystemNode> _fileSystem;
         private readonly string _basePath;
 
-        public DummyFileSystemWrapper(string basePath)
+        private DummyFileSystemWrapper(string basePath)
         {
             _basePath = NormalizePath(basePath);
             _fileSystem = new Dictionary<string, VirtualFileSystemNode>(StringComparer.OrdinalIgnoreCase);
@@ -19,6 +29,8 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
             // Создаем корневую директорию
             _fileSystem[_basePath] = new VirtualFileSystemNode { IsDirectory = true, Name = _basePath };
         }
+
+        public string BaseResultsPath => FalconScanResultsPath;
 
         public bool DirectoryExists(string path)
         {
@@ -106,17 +118,11 @@ namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
             return Path.GetFullPath(path).TrimEnd('\\', '/');
         }
         
-        // Вспомогательный класс для представления файлов и директорий
-        private class VirtualFileSystemNode
-        {
-            public bool IsDirectory { get; set; }
-            public string Name { get; set; }
-            public string Parent { get; set; }
-        }
-        
         // Статический метод для создания тестовой файловой системы
-        public static DummyFileSystemWrapper CreateTestFileSystem(string basePath)
+        public static DummyFileSystemWrapper CreateTestFileSystem()
         {
+            string basePath = FalconScanResultsPath;
+
             return new DummyFileSystemWrapper(basePath)
                 .AddDirectory(Path.Combine(basePath, "Job1"))
                 .AddDirectory(Path.Combine(basePath, "Job1", "Setup1"))

@@ -1,4 +1,4 @@
-﻿namespace CMM.Test.GUI.CmmWrappers
+﻿namespace CMM.Test.GUI.Wrappers
 {
     public interface ICmmFormatProperty
     {

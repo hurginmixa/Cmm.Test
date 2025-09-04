@@ -45,7 +45,7 @@
         <!-- Converter List -->
         <StackPanel Orientation="Vertical" Margin="0,0,0,10">
             <TextBlock Text="Selected Converter"/>
-            <ListBox ItemsSource="{Binding ConverterList}" SelectedItem="{Binding SelectedConverter}" DisplayMemberPath="DisplayName" Height="80" Margin="0,0,0,5"/>
+            <ListBox ItemsSource="{Binding ConverterList}" SelectedItem="{Binding SelectedConverter}" DisplayMemberPath="DisplayName" Height="80" Margin="0,0,0,5" Loaded="ConverterList_OnLoaded"/>
             <TextBlock Text="Search Converter"/>
             <TextBox Text="{Binding ConverterListFilter, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>

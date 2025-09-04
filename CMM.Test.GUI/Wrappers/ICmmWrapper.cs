@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace CMM.Test.GUI.CmmWrappers
+namespace CMM.Test.GUI.Wrappers
 {
     public interface ICmmWrapper
     {
