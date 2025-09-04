@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Cmm.API;
 using CMM.Test.GUI.Wrappers;
 using Converters.Tools;
 
@@ -156,7 +157,7 @@ namespace CMM.Test.GUI.Models
 
                     if (model.CreatingTabModel.ExportFlatPosition != null)
                     {
-                        model.CreatingTabModel.ExportFlatPosition = (CreatingTabModel.eExportFlatPosition)IniFileHelper.GetIni(CREATING_TAB_SECTION, "ExportFlatPosition", configPath, 0);
+                        model.CreatingTabModel.ExportFlatPosition = (eExportFlatPosition)IniFileHelper.GetIni(CREATING_TAB_SECTION, "ExportFlatPosition", configPath, 0);
                     }
                 }
 

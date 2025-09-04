@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using Cmm.API;
 using CMM.Test.GUI.Models;
 using CMM.Test.GUI.Tools;
 using CMM.Test.GUI.Views;
@@ -79,9 +80,9 @@ namespace CMM.Test.GUI.ViewModels
 
         public ICommand RTPCommand { get; }
 
-        public IEnumerable<CreatingTabModel.eExportFlatPosition> ExportFlatPositions => Enum.GetValues(typeof(CreatingTabModel.eExportFlatPosition)).Cast<CreatingTabModel.eExportFlatPosition>();
+        public IEnumerable<eExportFlatPosition> ExportFlatPositions => Enum.GetValues(typeof(eExportFlatPosition)).Cast<eExportFlatPosition>();
 
-        public CreatingTabModel.eExportFlatPosition SelectedExportFlatPosition
+        public eExportFlatPosition SelectedExportFlatPosition
         {
             get => _model.ExportFlatPosition;
             set => SetField(_model.ExportFlatPosition, value);
