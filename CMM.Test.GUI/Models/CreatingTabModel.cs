@@ -1,3 +1,4 @@
+using Cmm.API;
 using CMM.Test.GUI.Tools;
 using CMM.Test.GUI.Wrappers;
 
@@ -5,14 +6,6 @@ namespace CMM.Test.GUI.Models
 {
     public class CreatingTabModel
     {
-        public enum eExportFlatPosition
-        {
-            Botom,
-            Top,
-            Left,
-            Down
-        }
-
         public CreatingTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper, IFileSystemWrapper fileSystemWrapper)
         {
             CmmTestModel = cmmTestModel;

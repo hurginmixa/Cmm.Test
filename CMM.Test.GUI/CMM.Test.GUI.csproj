@@ -143,6 +143,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cmm.API\Cmm.API.csproj">
+      <Project>{2c408ada-ff14-4ddc-9ebb-d2995d17f17a}</Project>
+      <Name>Cmm.API</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CmmTestModules\CmmTestModules.csproj">
       <Project>{c50b55ac-b964-4a72-a321-5c42fdf35c71}</Project>
       <Name>CmmTestModules</Name>
