@@ -1,11 +1,11 @@
-using CMM.Test.GUI.CmmWrappers;
 using CMM.Test.GUI.Tools;
+using CMM.Test.GUI.Wrappers;
 
 namespace CMM.Test.GUI.Models
 {
     public class ImportUpdateTabModel
     {
-        public ImportUpdateTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper)
+        public ImportUpdateTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper, IFileSystemWrapper fileSystemWrapper)
         {
             CmmTestModel = cmmTestModel;
             CmmWrapper = cmmWrapper;
@@ -20,6 +20,7 @@ namespace CMM.Test.GUI.Models
             InVerification = false;
             NotShowMap = false;
             SelectedConverterName = "";
+            FileSystemWrapper = fileSystemWrapper;
         }
 
         public RefProperty<string> ResultPath { get; set; }
@@ -47,5 +48,7 @@ namespace CMM.Test.GUI.Models
         public CmmTestModel CmmTestModel { get; }
         
         public ICmmWrapper CmmWrapper { get; }
+
+        public IFileSystemWrapper FileSystemWrapper { get; }
     }
 }

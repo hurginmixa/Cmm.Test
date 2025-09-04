@@ -1,6 +1,6 @@
 using System;
 
-namespace CMM.Test.GUI.CmmWrappers.DummyImplementations
+namespace CMM.Test.GUI.Wrappers.DummyImplementations
 {
     public class DummyCmmFormatProperty : ICmmFormatProperty
     {

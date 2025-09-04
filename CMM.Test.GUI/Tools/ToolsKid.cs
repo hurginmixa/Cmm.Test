@@ -1,7 +1,7 @@
-﻿using CMM.Test.GUI.CmmWrappers;
-using CMM.Test.GUI.Models;
+﻿using CMM.Test.GUI.Models;
 using CMM.Test.GUI.Views;
 using System.Windows;
+using CMM.Test.GUI.Wrappers;
 
 namespace CMM.Test.GUI.Tools
 {

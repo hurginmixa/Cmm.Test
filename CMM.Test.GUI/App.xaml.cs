@@ -1,10 +1,10 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
-using CMM.Test.GUI.CmmWrappers.DummyImplementations;
 using CMM.Test.GUI.Models;
 using CMM.Test.GUI.ViewModels;
 using CMM.Test.GUI.Views;
+using CMM.Test.GUI.Wrappers;
 
 namespace CMM.Test.GUI
 {
@@ -19,29 +19,13 @@ namespace CMM.Test.GUI
         {
             base.OnStartup(e);
 
-            DummyCmmWrapper cmmWrapper = DummyCmmWrapper.CreateTestCmmWrapper();
+            IWrappers wrappers = WrappersFabric.MakeWrappers(MainWindow);
 
-            cmmWrapper.DoCreateEvent += s =>
-            {
-                if (MainWindow != null)
-                {
-                    MessageBox.Show(MainWindow, $" Creating {s}");
-                }
+            ICmmWrapper cmmWrapper = wrappers.GetCmmWrapper();
 
-                return true;
-            };
+            IFileSystemWrapper fileSystem = wrappers.FileSystemWrapper();
 
-            cmmWrapper.OpenCreatingRtpEvent += s =>
-            {
-                if (MainWindow != null)
-                {
-                    MessageBox.Show(MainWindow, $" Creating Rrp {s}");
-                }
-            };
-
-            _cmmTestModel = CmmTestModelHelper.CreateFromIni(cmmWrapper);
-
-            DummyFileSystemWrapper fileSystem = DummyFileSystemWrapper.CreateTestFileSystem(_cmmTestModel.BaseResultsPath);
+            _cmmTestModel = CmmTestModelHelper.CreateFromIni(cmmWrapper, fileSystem);
 
             MainWindow window = new MainWindow
             {

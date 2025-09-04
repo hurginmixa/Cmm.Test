@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CMM.Test.GUI.CmmWrappers
+namespace CMM.Test.GUI.Wrappers.RealImplementations
 {
     internal class CmmWrapper : ICmmWrapper
     {

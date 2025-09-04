@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 
 namespace CMM.Test.GUI.Views
@@ -10,6 +11,12 @@ namespace CMM.Test.GUI.Views
         public CreatingMapControl()
         {
             InitializeComponent();
+        }
+
+        private void ConverterNameList_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var listBox = sender as ListBox;
+            listBox?.ScrollIntoView(listBox.SelectedItem);
         }
     }
 }

@@ -1,20 +1,18 @@
-using CMM.Test.GUI.CmmWrappers;
 using Converters.Tools;
 using System;
 using System.IO;
+using CMM.Test.GUI.Wrappers;
 
 namespace CMM.Test.GUI.Models
 {
     public class CmmTestModel
     {
-        public CmmTestModel(ICmmWrapper cmmWrapper)
+        public CmmTestModel(ICmmWrapper cmmWrapper, IFileSystemWrapper fileSystemWrapper)
         {
-            CreatingTabModel = new CreatingTabModel(this, cmmWrapper);
+            CreatingTabModel = new CreatingTabModel(this, cmmWrapper, fileSystemWrapper);
 
-            ImportUpdateTabModel = new ImportUpdateTabModel(this, cmmWrapper);
+            ImportUpdateTabModel = new ImportUpdateTabModel(this, cmmWrapper, fileSystemWrapper);
         }
-
-        public string BaseResultsPath => @"\\mixa7th\c$\Falcon\ScanResults";
 
         public CreatingTabModel CreatingTabModel { get; }
 

@@ -42,7 +42,7 @@
         <StackPanel Orientation="Horizontal" Margin="0,10,0,20" IsEnabled="{Binding IsResultLoaded}">
             <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                 <TextBlock Text="Destination for :" FontWeight="Bold" FontSize="15"/>
-                <ListBox ItemsSource="{Binding ConverterNameList}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedConverter}" Height="100" Width="300" />
+                <ListBox ItemsSource="{Binding ConverterNameList}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedConverter}" Height="100" Width="300" Loaded="ConverterNameList_OnLoaded"/>
                 <TextBlock Text="Search Converter"/>
                 <TextBox Text="{Binding ConverterListFilter, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>

@@ -1,5 +1,5 @@
-using CMM.Test.GUI.CmmWrappers;
 using CMM.Test.GUI.Tools;
+using CMM.Test.GUI.Wrappers;
 
 namespace CMM.Test.GUI.Models
 {
@@ -13,10 +13,11 @@ namespace CMM.Test.GUI.Models
             Down
         }
 
-        public CreatingTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper)
+        public CreatingTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper, IFileSystemWrapper fileSystemWrapper)
         {
             CmmTestModel = cmmTestModel;
             CmmWrapper = cmmWrapper;
+            FileSystemWrapper = fileSystemWrapper;
 
             JobName = "";
             SetupName = "";
@@ -36,6 +37,8 @@ namespace CMM.Test.GUI.Models
         public CmmTestModel CmmTestModel { get; }
 
         public ICmmWrapper CmmWrapper { get; }
+
+        public IFileSystemWrapper FileSystemWrapper { get; }
 
         public RefProperty<string> ConverterName { get; set; }
 

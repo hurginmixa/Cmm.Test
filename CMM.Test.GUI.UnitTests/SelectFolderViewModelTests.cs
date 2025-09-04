@@ -1,7 +1,8 @@
 using System.IO;
 using System.Linq;
-using CMM.Test.GUI.CmmWrappers;
 using CMM.Test.GUI.ViewModels;
+using CMM.Test.GUI.Wrappers;
+using CMM.Test.GUI.Wrappers.RealImplementations;
 using NUnit.Framework;
 
 namespace CMM.Test.GUI.UnitTests

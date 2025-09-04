@@ -7,11 +7,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using CMM.Test.GUI.CmmWrappers;
-using CMM.Test.GUI.CmmWrappers.DummyImplementations;
 using CMM.Test.GUI.Models;
 using CMM.Test.GUI.Tools;
 using CMM.Test.GUI.Views;
+using CMM.Test.GUI.Wrappers;
 
 namespace CMM.Test.GUI.ViewModels
 {
@@ -32,7 +31,7 @@ namespace CMM.Test.GUI.ViewModels
             _model = model;
             _fileSystem = fileSystem;
 
-            _allConverters = model.CmmWrapper.CreatingConverters.Select(r => new CmmFormatPropertyViewModel(r)).ToList();
+            _allConverters = model.CmmWrapper.CreatingConverters.Select(CmmFormatPropertyViewModel.NewModel).ToList();
             _converterNameList = new ObservableCollection<CmmFormatPropertyViewModel>(_allConverters);
 
             _selectedConverter = _allConverters.FirstOrDefault(c => c.Name == model.ConverterName);
@@ -188,7 +187,7 @@ namespace CMM.Test.GUI.ViewModels
                 WaferId = WaferId
             };
 
-            if (!ToolsKid.OpenCheckResultDialog((Window) o, _model.CmmTestModel.BaseResultsPath, selectedFolderModel, _fileSystem))
+            if (!ToolsKid.OpenCheckResultDialog((Window) o, _model.FileSystemWrapper.BaseResultsPath, selectedFolderModel, _fileSystem))
             {
                 return;
             }
@@ -220,7 +219,7 @@ namespace CMM.Test.GUI.ViewModels
 
         private string GetScanLogIniPath()
         {
-            return Path.Combine(_model.CmmTestModel.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
+            return Path.Combine(_model.FileSystemWrapper.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
         }
 
         private void FilterConverterList()

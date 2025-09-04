@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CMM.Test.GUI.CmmWrappers
+﻿namespace CMM.Test.GUI.Wrappers
 {
     public interface IFileSystemWrapper
     {
+        string BaseResultsPath { get; }
+
         bool DirectoryExists(string basePath);
         
         string[] GetDirectories(string basePath);
