@@ -56,6 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Tools\ImportWaferMapKindHelper.cs" />
+    <Compile Include="ViewModels\ImportWaferMapKindViewModel.cs" />
     <Compile Include="Wrappers\DummyImplementations\DummyWrapperImplementations.cs" />
     <Compile Include="Wrappers\IWrappers.cs" />
     <Compile Include="Wrappers\RealImplementations\CmmWrapper.cs" />

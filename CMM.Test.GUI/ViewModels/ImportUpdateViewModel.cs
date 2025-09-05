@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using System.Windows.Input;
 using CMM.Test.GUI.Models;
 using CMM.Test.GUI.Tools;
 using CMM.Test.GUI.Wrappers;
+using Cmm.API;
 
 namespace CMM.Test.GUI.ViewModels
 {
@@ -22,10 +24,19 @@ namespace CMM.Test.GUI.ViewModels
         private CmmFormatPropertyViewModel _selectedConverter;
         private string _converterListFilter;
 
+        private readonly ImportWaferMapKindViewModel[] _importWaferMapKindList;
+        private ImportWaferMapKindViewModel _selectedImportKind;
+
+        private eImportUpdateViewModelStatus _status;
+        private bool _updateEnabled;
+
         public ImportUpdateViewModel(ImportUpdateTabModel importUpdateTabModel, IFileSystemWrapper fileSystem)
         {
             _importUpdateTabModel = importUpdateTabModel;
             _fileSystem = fileSystem;
+
+            LoadCommand = new RelayCommand(OnLoad);
+            UpdateCommand = new RelayCommand(OnUpdateCommand);
 
             SetResultPathCommand = new RelayCommand(OnCheckResult);
             SelectDataInPathCommand = new RelayCommand(SelectDataInPath);
@@ -36,7 +47,13 @@ namespace CMM.Test.GUI.ViewModels
             _converterList = new ObservableCollection<CmmFormatPropertyViewModel>(_allConverters);
             _selectedConverter = _allConverters.FirstOrDefault(c => c.Name == importUpdateTabModel.SelectedConverterName.Value);
             _converterListFilter = string.Empty;
-            
+
+            // Создание массива ImportWaferMapViewModel для всех значений enum eImportWaferMapKind
+            _importWaferMapKindList = Enum.GetValues(typeof(eImportWaferMapKind)).Cast<eImportWaferMapKind>()
+                .Select(kind => new ImportWaferMapKindViewModel(kind, ImportWaferMapKindHelper.GeteImportWaferMapKindDisplayName(kind)))
+                .ToArray();
+            _selectedImportKind = _importWaferMapKindList.FirstOrDefault(vm => vm.Kind == importUpdateTabModel.ImportKind.Value) ?? _importWaferMapKindList.FirstOrDefault();
+
             // Добавить обработку свойств
             PropertyChanged += (sender, args) =>
             {
@@ -52,8 +69,27 @@ namespace CMM.Test.GUI.ViewModels
                     case nameof(ConverterListFilter):
                         FilterConverterList();
                         break;
+                        
+                    case nameof(SelectedImportKind):
+                        if (_importUpdateTabModel.ImportKind != null && SelectedImportKind != null)
+                        {
+                            _importUpdateTabModel.ImportKind.Value = SelectedImportKind.Kind;
+                        }
+                        break;
                 }
             };
+
+            SetStatus(eImportUpdateViewModelStatus.Start);
+        }
+
+        private void OnLoad(object o)
+        {
+            SetStatus(eImportUpdateViewModelStatus.Loaded);
+        }
+
+        private void OnUpdateCommand(object o)
+        {
+            SetStatus(eImportUpdateViewModelStatus.Start);
         }
 
         private void OnCheckResult(object o)
@@ -74,10 +110,38 @@ namespace CMM.Test.GUI.ViewModels
             ResultPath = selectedFolderModel.ResultPath;
         }
 
+        public ICommand LoadCommand { get; }
+        public ICommand UpdateCommand { get; }
+
         public ICommand SetResultPathCommand { get; }
         public ICommand SelectDataInPathCommand { get; }
         public ICommand SelectDataOutPathCommand { get; }
-        
+
+        public eImportUpdateViewModelStatus Status
+        {
+            get => _status;
+            set => SetStatus(status: value);
+        }
+
+        private void SetStatus(eImportUpdateViewModelStatus status)
+        {
+            _status = status;
+
+            switch (_status)
+            {
+                case eImportUpdateViewModelStatus.Start:
+                    UpdateEnabled = false;
+                    break;
+                
+                case eImportUpdateViewModelStatus.Loaded:
+                    UpdateEnabled = true;
+                    break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         private void SelectDataInPath(object obj)
         {
             var dialog = new FolderBrowserDialog();
@@ -130,6 +194,12 @@ namespace CMM.Test.GUI.ViewModels
             set => SetField(_importUpdateTabModel.WaferId, value);
         }
 
+        public bool UpdateEnabled
+        {
+            get => _updateEnabled;
+            set => SetField(ref _updateEnabled, value);
+        }
+
         public string WaferMapMask
         {
             get => _importUpdateTabModel.WaferMapMask;
@@ -179,6 +249,16 @@ namespace CMM.Test.GUI.ViewModels
             get => _converterListFilter;
             set => SetField(ref _converterListFilter, value);
         }
+
+        // Возвращает массив объектов ImportWaferMapViewModel
+        public ImportWaferMapKindViewModel[] ImportKinds => _importWaferMapKindList;
+        
+
+        public ImportWaferMapKindViewModel SelectedImportKind
+        {
+            get => _selectedImportKind;
+            set => SetField(ref _selectedImportKind, value);
+        }
         
         private void FilterConverterList()
         {
@@ -211,5 +291,11 @@ namespace CMM.Test.GUI.ViewModels
                 SelectedConverter = filteredList.First();
             }
         }
+    }
+
+    public enum eImportUpdateViewModelStatus
+    {
+        Start,
+        Loaded
     }
 }
