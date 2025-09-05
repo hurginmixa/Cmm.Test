@@ -65,6 +65,7 @@ namespace CMM.Test.GUI.Models
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "InVerification", configPath, model.ImportUpdateTabModel.InVerification?.Value ?? false);
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "NotShowMap", configPath, model.ImportUpdateTabModel.NotShowMap?.Value ?? false);
                     IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "SelectedConverterName", configPath, (string)model.ImportUpdateTabModel.SelectedConverterName ?? string.Empty);
+                    IniFileHelper.PutIni(IMPORT_UPDATE_SECTION, "ImportKind", configPath, (int)model.ImportUpdateTabModel.ImportKind.Value);
                 }
             }
             catch (Exception ex)
@@ -233,6 +234,12 @@ namespace CMM.Test.GUI.Models
                     if (!string.IsNullOrEmpty(selectedConverterName) && model.ImportUpdateTabModel.SelectedConverterName != null)
                     {
                         model.ImportUpdateTabModel.SelectedConverterName = selectedConverterName;
+                    }
+                    
+                    // Load ImportKind property
+                    if (model.ImportUpdateTabModel.ImportKind != null)
+                    {
+                        model.ImportUpdateTabModel.ImportKind = (eImportWaferMapKind)IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "ImportKind", configPath, (int)eImportWaferMapKind.ForEnginiring);
                     }
                 }
 

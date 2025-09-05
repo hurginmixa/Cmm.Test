@@ -1,5 +1,6 @@
 using CMM.Test.GUI.Tools;
 using CMM.Test.GUI.Wrappers;
+using Cmm.API;
 
 namespace CMM.Test.GUI.Models
 {
@@ -21,6 +22,7 @@ namespace CMM.Test.GUI.Models
             NotShowMap = false;
             SelectedConverterName = "";
             FileSystemWrapper = fileSystemWrapper;
+            ImportKind = eImportWaferMapKind.ForEnginiring;
         }
 
         public RefProperty<string> ResultPath { get; set; }
@@ -44,6 +46,8 @@ namespace CMM.Test.GUI.Models
         public RefProperty<bool> NotShowMap { get; set; }
 
         public RefProperty<string> SelectedConverterName { get; set; }
+
+        public RefProperty<eImportWaferMapKind> ImportKind { get; set; }
 
         public CmmTestModel CmmTestModel { get; }
         
