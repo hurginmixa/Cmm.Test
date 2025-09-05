@@ -53,13 +53,13 @@
         <!-- Import Kind -->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
             <TextBlock Text="Import Kind" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <ComboBox Width="150" ItemsSource="{Binding ImportKinds}" SelectedItem="{Binding SelectedImportKind}" />
+            <ComboBox Width="250" ItemsSource="{Binding ImportKinds}" SelectedItem="{Binding SelectedImportKind}" DisplayMemberPath="DisplayName" />
         </StackPanel>
 
         <!-- Load / View Map File -->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
             <Button Content="Load" Width="80" Command="{Binding LoadCommand}" Margin="0,0,5,0"/>
-            <Button Content="View Map File" Width="120" Command="{Binding ViewMapCommand}" IsEnabled="False" />
+            <Button Content="View Map File" Width="120" Command="{Binding ViewMapCommand}" IsEnabled="{Binding UpdateEnabled}" />
         </StackPanel>
 
         <!-- File Name & File Format -->
@@ -74,7 +74,7 @@
             </StackPanel>
         </StackPanel>
 
-        <GroupBox BorderBrush="DarkGray" BorderThickness="3" Header="Updating" Margin="0,10,0,0" Padding="10">
+        <GroupBox BorderBrush="DarkGray" BorderThickness="3" Header="Updating" Margin="0,10,0,0" Padding="10" IsEnabled="{Binding UpdateEnabled}">
             <!-- DataOut Path -->
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Vertical">
@@ -127,7 +127,7 @@
                 </StackPanel>
 
                 <!-- Update Button -->
-                <Button Content="Update . . ." Height="30" FontWeight="Bold" Width="220" HorizontalAlignment="Left" IsEnabled="{Binding CanUpdate}" Margin="0,5,0,5" />
+                <Button Content="Update . . ." Height="30" FontWeight="Bold" Width="220" HorizontalAlignment="Left" Command="{Binding UpdateCommand}" IsEnabled="{Binding UpdateEnabled}" Margin="0,5,0,5" />
             </StackPanel>
         </GroupBox>
     </StackPanel>
