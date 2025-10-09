@@ -8,7 +8,7 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
     {
         public event Func<IEnumerable<ICmmFormatProperty>> OnGetCreateConvertersEvent;
         public event Func<IEnumerable<ICmmFormatProperty>> OnGetImportUpdateConvertersEvent;
-        public event Func<string, bool> DoCreateEvent;
+        public event Func<string, string, bool> DoCreateEvent;
         public event Action<string> OpenCreatingRtpEvent;
 
         public static DummyCmmWrapper CreateTestCmmWrapper(Window mainWindow)
@@ -31,11 +31,11 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
                 .WithDoCreate(true)
                 .WithOpenCreatingRtp(convertorName => { /* Default implementation */ });
 
-            cmmWrapper.DoCreateEvent += s =>
+            cmmWrapper.DoCreateEvent += (converter, resultPath) =>
             {
-                if (mainWindow != null)
+                //if (mainWindow != null)
                 {
-                    MessageBox.Show(mainWindow, $" Creating {s}");
+                    MessageBox.Show(mainWindow, $" Creating {converter} on result {resultPath}");
                 }
 
                 return true;
@@ -65,11 +65,11 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             }
         }
 
-        public bool DoCreate(string converterName)
+        public bool DoCreate(string converterName, string resultPath)
         {
             if (DoCreateEvent != null)
             {
-                return DoCreateEvent(converterName);
+                return DoCreateEvent(converterName, resultPath);
             }
 
             throw new Exception($"Property {nameof(DoCreateEvent)} was not defined");
@@ -112,9 +112,9 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             return this;
         }
 
-        public DummyCmmWrapper WithDoCreate(bool converters)
+        public DummyCmmWrapper WithDoCreate(bool creatingResult)
         {
-            DoCreateEvent += (s) => converters;
+            DoCreateEvent += (s, r) => creatingResult;
             return this;
         }
 

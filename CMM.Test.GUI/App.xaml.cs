@@ -25,7 +25,7 @@ namespace CMM.Test.GUI
 
             IFileSystemWrapper fileSystem = wrappers.FileSystemWrapper();
 
-            _cmmTestModel = CmmTestModelHelper.CreateFromIni(cmmWrapper, fileSystem);
+            _cmmTestModel = CmmTestModelHelper.CreateFromIni(cmmWrapper);
 
             MainWindow window = new MainWindow
             {

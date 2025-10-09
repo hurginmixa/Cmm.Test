@@ -6,7 +6,7 @@ namespace CMM.Test.GUI.Models
 {
     public class ImportUpdateTabModel
     {
-        public ImportUpdateTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper, IFileSystemWrapper fileSystemWrapper)
+        public ImportUpdateTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper)
         {
             CmmTestModel = cmmTestModel;
             CmmWrapper = cmmWrapper;
@@ -21,7 +21,6 @@ namespace CMM.Test.GUI.Models
             InVerification = false;
             NotShowMap = false;
             SelectedConverterName = "";
-            FileSystemWrapper = fileSystemWrapper;
             ImportKind = eImportWaferMapKind.ForEnginiring;
         }
 
@@ -52,7 +51,5 @@ namespace CMM.Test.GUI.Models
         public CmmTestModel CmmTestModel { get; }
         
         public ICmmWrapper CmmWrapper { get; }
-
-        public IFileSystemWrapper FileSystemWrapper { get; }
     }
 }

@@ -6,7 +6,7 @@ namespace CMM.Test.GUI.Wrappers.RealImplementations
     {
         public IEnumerable<ICmmFormatProperty> CreatingConverters => throw new System.NotImplementedException();
 
-        public bool DoCreate(string converterName) => throw new System.NotImplementedException();
+        public bool DoCreate(string converterName, string resultPath) => throw new System.NotImplementedException();
         
         public void OpenCreatingRtp(string converterName) => throw new System.NotImplementedException();
 
