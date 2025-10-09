@@ -8,7 +8,7 @@ namespace CMM.Test.GUI.Wrappers
 
         IEnumerable<ICmmFormatProperty> ImportUpdateConverters { get; }
         
-        bool DoCreate(string converterName);
+        bool DoCreate(string converterName, string resultPath);
         
         void OpenCreatingRtp(string converterName);
     }

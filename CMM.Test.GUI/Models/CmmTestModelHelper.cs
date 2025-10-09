@@ -81,166 +81,159 @@ namespace CMM.Test.GUI.Models
         /// <param name="cmmWrapper">ICmmWrapper instance</param>
         /// <param name="filePath">Path to INI file (if not specified, default file is used)</param>
         /// <returns>Filled CmmTestModel instance or null in case of error</returns>
-        public static CmmTestModel CreateFromIni(ICmmWrapper cmmWrapper, IFileSystemWrapper systemInfoWrapper)
+        public static CmmTestModel CreateFromIni(ICmmWrapper cmmWrapper)
         {
             string configPath = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), CONFIG_FILENAME);
 
             try
             {
+                // =================================================================================
+                // Create new model
+                CmmTestModel model = new CmmTestModel(cmmWrapper);
+
                 // Check if file exists
                 if (!File.Exists(configPath))
                 {
                     // If file doesn't exist, return model with default settings
-                    return new CmmTestModel(cmmWrapper, systemInfoWrapper);
+                    return new CmmTestModel(cmmWrapper);
                 }
 
-                // Create new model
-                CmmTestModel model = new CmmTestModel(cmmWrapper, systemInfoWrapper);
-
                 // Load CreatingTabModel properties
-                if (model.CreatingTabModel != null)
+                string converterName = IniFileHelper.GetIni(CREATING_TAB_SECTION, "ConverterName", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(converterName) && model.CreatingTabModel.ConverterName != null)
                 {
-                    // Load ConverterName property
-                    string converterName = IniFileHelper.GetIni(CREATING_TAB_SECTION, "ConverterName", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(converterName) && model.CreatingTabModel.ConverterName != null)
-                    {
-                        model.CreatingTabModel.ConverterName = converterName;
-                    }
-                    
-                    string jobName = IniFileHelper.GetIni(CREATING_TAB_SECTION, "JobName", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(jobName) && model.CreatingTabModel.JobName != null)
-                    {
-                        model.CreatingTabModel.JobName = jobName;
-                    }
+                    model.CreatingTabModel.ConverterName = converterName;
+                }
 
-                    string setupName = IniFileHelper.GetIni(CREATING_TAB_SECTION, "SetupName", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(setupName) && model.CreatingTabModel.SetupName != null)
-                    {
-                        model.CreatingTabModel.SetupName = setupName;
-                    }
+                // Load JobName property
+                string jobName = IniFileHelper.GetIni(CREATING_TAB_SECTION, "JobName", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(jobName) && model.CreatingTabModel.JobName != null)
+                {
+                    model.CreatingTabModel.JobName = jobName;
+                }
 
-                    string lot = IniFileHelper.GetIni(CREATING_TAB_SECTION, "Lot", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(lot) && model.CreatingTabModel.Lot != null)
-                    {
-                        model.CreatingTabModel.Lot = lot;
-                    }
+                // Load SetupName property
+                string setupName = IniFileHelper.GetIni(CREATING_TAB_SECTION, "SetupName", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(setupName) && model.CreatingTabModel.SetupName != null)
+                {
+                    model.CreatingTabModel.SetupName = setupName;
+                }
 
-                    string waferId = IniFileHelper.GetIni(CREATING_TAB_SECTION, "WaferId", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(waferId) && model.CreatingTabModel.WaferId != null)
-                    {
-                        model.CreatingTabModel.WaferId = waferId;
-                    }
+                // Load Lot property
+                string lot = IniFileHelper.GetIni(CREATING_TAB_SECTION, "Lot", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(lot) && model.CreatingTabModel != null)
+                {
+                    model.CreatingTabModel.Lot = lot;
+                }
 
-                    if (model.CreatingTabModel.CreateOnInternalBins != null)
-                    {
-                        model.CreatingTabModel.CreateOnInternalBins = IniFileHelper.GetIni(CREATING_TAB_SECTION, "CreateOnInternalBins", configPath, true);
-                    }
+                // Load WaferId property
+                string waferId = IniFileHelper.GetIni(CREATING_TAB_SECTION, "WaferId", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(waferId) && model.CreatingTabModel != null)
+                {
+                    model.CreatingTabModel.WaferId = waferId;
+                }
 
-                    if (model.CreatingTabModel.AssumeAutoCycle != null)
-                    {
-                        model.CreatingTabModel.AssumeAutoCycle = IniFileHelper.GetIni(CREATING_TAB_SECTION, "AssumeAutoCycle", configPath, false);
-                    }
+                model.CreatingTabModel.CreateOnInternalBins = IniFileHelper.GetIni(CREATING_TAB_SECTION, "CreateOnInternalBins", configPath, true);
 
-                    if (model.CreatingTabModel.AssumeVerification != null)
-                    {
-                        model.CreatingTabModel.AssumeVerification = IniFileHelper.GetIni(CREATING_TAB_SECTION, "AssumeVerification", configPath, true);
-                    }
+                model.CreatingTabModel.AssumeAutoCycle = IniFileHelper.GetIni(CREATING_TAB_SECTION, "AssumeAutoCycle", configPath, false);
 
-                    if (model.CreatingTabModel.NotShowMap != null)
-                    {
-                        model.CreatingTabModel.NotShowMap = IniFileHelper.GetIni(CREATING_TAB_SECTION, "NotShowMap", configPath, false);
-                    }
+                if (model.CreatingTabModel.AssumeVerification != null)
+                {
+                    model.CreatingTabModel.AssumeVerification = IniFileHelper.GetIni(CREATING_TAB_SECTION, "AssumeVerification", configPath, true);
+                }
 
-                    if (model.CreatingTabModel.ImportAfterCreate != null)
-                    {
-                        model.CreatingTabModel.ImportAfterCreate = IniFileHelper.GetIni(CREATING_TAB_SECTION, "ImportAfterCreate", configPath, true);
-                    }
+                if (model.CreatingTabModel.NotShowMap != null)
+                {
+                    model.CreatingTabModel.NotShowMap = IniFileHelper.GetIni(CREATING_TAB_SECTION, "NotShowMap", configPath, false);
+                }
 
-                    if (model.CreatingTabModel.ExportFlatPosition != null)
-                    {
-                        model.CreatingTabModel.ExportFlatPosition = (eExportFlatPosition)IniFileHelper.GetIni(CREATING_TAB_SECTION, "ExportFlatPosition", configPath, 0);
-                    }
+                if (model.CreatingTabModel.ImportAfterCreate != null)
+                {
+                    model.CreatingTabModel.ImportAfterCreate = IniFileHelper.GetIni(CREATING_TAB_SECTION, "ImportAfterCreate", configPath, true);
+                }
+
+                if (model.CreatingTabModel.ExportFlatPosition != null)
+                {
+                    model.CreatingTabModel.ExportFlatPosition = (eExportFlatPosition) IniFileHelper.GetIni(CREATING_TAB_SECTION, "ExportFlatPosition", configPath, 0);
                 }
 
                 // Load ImportUpdateTabModel properties
-                if (model.ImportUpdateTabModel != null)
+                
+                // Load ResultPath property
+                string resultPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "ResultPath", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(resultPath) && model.ImportUpdateTabModel.ResultPath != null)
                 {
-                    // Load ResultPath property
-                    string resultPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "ResultPath", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(resultPath) && model.ImportUpdateTabModel.ResultPath != null)
-                    {
-                        model.ImportUpdateTabModel.ResultPath = resultPath;
-                    }
+                    model.ImportUpdateTabModel.ResultPath = resultPath;
+                }
 
-                    // Load UsingResultPath property
-                    if (model.ImportUpdateTabModel.UsingResultPath != null)
-                    {
-                        model.ImportUpdateTabModel.UsingResultPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "UsingResultPath", configPath, false);
-                    }
+                // Load UsingResultPath property
+                if (model.ImportUpdateTabModel.UsingResultPath != null)
+                {
+                    model.ImportUpdateTabModel.UsingResultPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "UsingResultPath", configPath, false);
+                }
                     
-                    // Load new properties
-                    string lotId = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "LotId", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(lotId) && model.ImportUpdateTabModel.LotId != null)
-                    {
-                        model.ImportUpdateTabModel.LotId = lotId;
-                    }
+                // Load new properties
+                string lotId = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "LotId", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(lotId) && model.ImportUpdateTabModel.LotId != null)
+                {
+                    model.ImportUpdateTabModel.LotId = lotId;
+                }
                     
-                    string waferIdImport = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "WaferId", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(waferIdImport) && model.ImportUpdateTabModel.WaferId != null)
-                    {
-                        model.ImportUpdateTabModel.WaferId = waferIdImport;
-                    }
+                string waferIdImport = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "WaferId", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(waferIdImport) && model.ImportUpdateTabModel.WaferId != null)
+                {
+                    model.ImportUpdateTabModel.WaferId = waferIdImport;
+                }
                     
-                    string waferMapMask = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "WaferMapMask", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(waferMapMask) && model.ImportUpdateTabModel.WaferMapMask != null)
-                    {
-                        model.ImportUpdateTabModel.WaferMapMask = waferMapMask;
-                    }
+                string waferMapMask = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "WaferMapMask", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(waferMapMask) && model.ImportUpdateTabModel.WaferMapMask != null)
+                {
+                    model.ImportUpdateTabModel.WaferMapMask = waferMapMask;
+                }
                     
-                    string submapId = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "SubmapId", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(submapId) && model.ImportUpdateTabModel.SubmapId != null)
-                    {
-                        model.ImportUpdateTabModel.SubmapId = submapId;
-                    }
+                string submapId = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "SubmapId", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(submapId) && model.ImportUpdateTabModel.SubmapId != null)
+                {
+                    model.ImportUpdateTabModel.SubmapId = submapId;
+                }
                     
-                    // Load DataInPath property
-                    string dataInPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "DataInPath", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(dataInPath) && model.ImportUpdateTabModel.DataInPath != null)
-                    {
-                        model.ImportUpdateTabModel.DataInPath = dataInPath;
-                    }
+                // Load DataInPath property
+                string dataInPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "DataInPath", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(dataInPath) && model.ImportUpdateTabModel.DataInPath != null)
+                {
+                    model.ImportUpdateTabModel.DataInPath = dataInPath;
+                }
                     
-                    // Load DataOutPath property
-                    string dataOutPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "DataOutPath", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(dataOutPath) && model.ImportUpdateTabModel.DataOutPath != null)
-                    {
-                        model.ImportUpdateTabModel.DataOutPath = dataOutPath;
-                    }
+                // Load DataOutPath property
+                string dataOutPath = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "DataOutPath", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(dataOutPath) && model.ImportUpdateTabModel.DataOutPath != null)
+                {
+                    model.ImportUpdateTabModel.DataOutPath = dataOutPath;
+                }
                     
-                    // Load InVerification property
-                    if (model.ImportUpdateTabModel.InVerification != null)
-                    {
-                        model.ImportUpdateTabModel.InVerification = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "InVerification", configPath, false);
-                    }
+                // Load InVerification property
+                if (model.ImportUpdateTabModel.InVerification != null)
+                {
+                    model.ImportUpdateTabModel.InVerification = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "InVerification", configPath, false);
+                }
                     
-                    // Load NotShowMap property
-                    if (model.ImportUpdateTabModel.NotShowMap != null)
-                    {
-                        model.ImportUpdateTabModel.NotShowMap = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "NotShowMap", configPath, false);
-                    }
+                // Load NotShowMap property
+                if (model.ImportUpdateTabModel.NotShowMap != null)
+                {
+                    model.ImportUpdateTabModel.NotShowMap = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "NotShowMap", configPath, false);
+                }
                     
-                    // Load SelectedConverterName property
-                    string selectedConverterName = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "SelectedConverterName", configPath, string.Empty);
-                    if (!string.IsNullOrEmpty(selectedConverterName) && model.ImportUpdateTabModel.SelectedConverterName != null)
-                    {
-                        model.ImportUpdateTabModel.SelectedConverterName = selectedConverterName;
-                    }
+                // Load SelectedConverterName property
+                string selectedConverterName = IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "SelectedConverterName", configPath, string.Empty);
+                if (!string.IsNullOrEmpty(selectedConverterName) && model.ImportUpdateTabModel.SelectedConverterName != null)
+                {
+                    model.ImportUpdateTabModel.SelectedConverterName = selectedConverterName;
+                }
                     
-                    // Load ImportKind property
-                    if (model.ImportUpdateTabModel.ImportKind != null)
-                    {
-                        model.ImportUpdateTabModel.ImportKind = (eImportWaferMapKind)IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "ImportKind", configPath, (int)eImportWaferMapKind.ForEnginiring);
-                    }
+                // Load ImportKind property
+                if (model.ImportUpdateTabModel.ImportKind != null)
+                {
+                    model.ImportUpdateTabModel.ImportKind = (eImportWaferMapKind) IniFileHelper.GetIni(IMPORT_UPDATE_SECTION, "ImportKind", configPath, (int) eImportWaferMapKind.ForEnginiring);
                 }
 
                 return model;
@@ -248,7 +241,7 @@ namespace CMM.Test.GUI.Models
             catch (Exception ex)
             {
                 // Handle load errors
-                Console.WriteLine($"Error loading data: {ex}");
+                Console.Error.WriteLine($"Error loading data: {ex}");
                 return null;
             }
         }

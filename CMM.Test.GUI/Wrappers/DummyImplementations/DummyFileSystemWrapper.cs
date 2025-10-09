@@ -15,8 +15,6 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             public string Parent { get; set; }
         }
 
-        public const string FalconScanResultsPath = @"\\mixa7th\c$\Falcon\ScanResults";
-
         // Виртуальная файловая система
         private readonly Dictionary<string, VirtualFileSystemNode> _fileSystem;
         private readonly string _basePath;
@@ -29,8 +27,6 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             // Создаем корневую директорию
             _fileSystem[_basePath] = new VirtualFileSystemNode { IsDirectory = true, Name = _basePath };
         }
-
-        public string BaseResultsPath => FalconScanResultsPath;
 
         public bool DirectoryExists(string path)
         {

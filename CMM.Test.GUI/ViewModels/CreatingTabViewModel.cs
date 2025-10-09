@@ -48,6 +48,7 @@ namespace CMM.Test.GUI.ViewModels
 
             RTPCommand = new RelayCommand(o => _model.OpenRtp(), _ => IsReadyToCreate);
 
+            // Здесь собраны все реакции на изменения свойств
             PropertyChanged += (sender, args) =>
             {
                 switch (args.PropertyName)
@@ -188,7 +189,7 @@ namespace CMM.Test.GUI.ViewModels
                 WaferId = WaferId
             };
 
-            if (!ToolsKid.OpenCheckResultDialog((Window) o, _model.FileSystemWrapper.BaseResultsPath, selectedFolderModel, _fileSystem))
+            if (!ToolsKid.OpenCheckResultDialog((Window) o, _model.CmmTestModel.BaseResultsPath, selectedFolderModel, _fileSystem))
             {
                 return;
             }
@@ -220,7 +221,7 @@ namespace CMM.Test.GUI.ViewModels
 
         private string GetScanLogIniPath()
         {
-            return Path.Combine(_model.FileSystemWrapper.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
+            return Path.Combine(_model.CmmTestModel.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
         }
 
         private void FilterConverterList()
