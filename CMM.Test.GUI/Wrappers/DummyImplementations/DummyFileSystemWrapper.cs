@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CMM.Test.GUI.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -117,7 +118,7 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
         // Статический метод для создания тестовой файловой системы
         public static DummyFileSystemWrapper CreateTestFileSystem()
         {
-            string basePath = FalconScanResultsPath;
+            string basePath = CmmTestModel.FalconScanResultsPath;
 
             return new DummyFileSystemWrapper(basePath)
                 .AddDirectory(Path.Combine(basePath, "Job1"))
