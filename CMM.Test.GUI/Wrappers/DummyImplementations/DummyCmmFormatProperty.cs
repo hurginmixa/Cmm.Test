@@ -6,6 +6,7 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
     {
         public event Func<string> OnNameEvent;
         public event Func<string> OnDisplayNameEvent;
+        public event Func<bool> OnDoHaveCreatingRtpEvent;
 
         string ICmmFormatProperty.Name 
         { 
@@ -33,6 +34,19 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             }
         }
 
+        bool ICmmFormatProperty.DoHaseCreatingRtp 
+        { 
+            get 
+            {
+                if (OnDoHaveCreatingRtpEvent != null)
+                {
+                    return OnDoHaveCreatingRtpEvent();
+                }
+
+                throw new Exception("Property DisplayName was not defined");
+            }
+        }
+
         public DummyCmmFormatProperty WithName(string value)
         {
             OnNameEvent += () => value;
@@ -43,6 +57,13 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
         public DummyCmmFormatProperty WithDisplayName(string value)
         {
             OnDisplayNameEvent += () => value;
+
+            return this;
+        }
+
+        public DummyCmmFormatProperty WithDoHaveCreatingRtp(bool value)
+        {
+            OnDoHaveCreatingRtpEvent += () => value;
 
             return this;
         }

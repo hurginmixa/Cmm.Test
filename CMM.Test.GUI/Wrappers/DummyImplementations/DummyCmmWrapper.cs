@@ -10,44 +10,57 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
         public event Func<IEnumerable<ICmmFormatProperty>> OnGetImportUpdateConvertersEvent;
         public event Func<string, string, bool> DoCreateEvent;
         public event Action<string> OpenCreatingRtpEvent;
+        public event Func<string, bool> DoHaveCreatingRtpEvent;
 
-        public static DummyCmmWrapper CreateTestCmmWrapper(Window mainWindow)
+        public static DummyCmmWrapper CreateTestCmmWrapper()
         {
             DummyCmmWrapper cmmWrapper = new DummyCmmWrapper();
 
             List<DummyCmmFormatProperty> formatProperties = new List<DummyCmmFormatProperty>
             {
-                new DummyCmmFormatProperty().WithName("Klarf").WithDisplayName("Klarf Converter"),
-                new DummyCmmFormatProperty().WithName("Sinf").WithDisplayName("Sinf Converter"),
-                new DummyCmmFormatProperty().WithName("Sinf3D").WithDisplayName("Sinf3D Converter"),
-                new DummyCmmFormatProperty().WithName("Tdx").WithDisplayName("Tdx Converter"),
-                new DummyCmmFormatProperty().WithName("KlarfNew").WithDisplayName("Klarf New Converter"),
-                new DummyCmmFormatProperty().WithName("IPO").WithDisplayName("IPO Converter"),
+                new DummyCmmFormatProperty().WithName("Klarf").WithDisplayName("Klarf Converter").WithDoHaveCreatingRtp(true),
+                new DummyCmmFormatProperty().WithName("Sinf").WithDisplayName("Sinf Converter").WithDoHaveCreatingRtp(false),
+                new DummyCmmFormatProperty().WithName("Sinf3D").WithDisplayName("Sinf3D Converter").WithDoHaveCreatingRtp(false),
+                new DummyCmmFormatProperty().WithName("Tdx").WithDisplayName("Tdx Converter").WithDoHaveCreatingRtp(true),
+                new DummyCmmFormatProperty().WithName("KlarfNew").WithDisplayName("Klarf New Converter").WithDoHaveCreatingRtp(false),
+                new DummyCmmFormatProperty().WithName("IPO").WithDisplayName("IPO Converter").WithDoHaveCreatingRtp(false),
             };
 
             cmmWrapper
                 .WithGetCreateConverters(formatProperties)
                 .WithGetImportUpdateConverters(formatProperties)
-                .WithDoCreate(true)
-                .WithOpenCreatingRtp(convertorName => { /* Default implementation */ });
-
-            cmmWrapper.DoCreateEvent += (converter, resultPath) =>
-            {
-                //if (mainWindow != null)
+                .WithDoCreate((converter, resultPath) =>
                 {
-                    MessageBox.Show(mainWindow, $" Creating {converter} on result {resultPath}");
-                }
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        if (Application.Current.MainWindow != null)
+                        {
+                            MessageBox.Show(Application.Current.MainWindow, $" Creating {converter} on result {resultPath}");
+                        }
+                    });
 
-                return true;
-            };
-
-            cmmWrapper.OpenCreatingRtpEvent += s =>
-            {
-                if (mainWindow != null)
+                    return true;
+                })
+                .WithOpenCreatingRtp(s =>
                 {
-                    MessageBox.Show(mainWindow, $" Creating Rrp {s}");
-                }
-            };
+                    if (Application.Current.MainWindow != null)
+                    {
+                        MessageBox.Show(Application.Current.MainWindow, $" Creating Rrp {s}");
+                    }
+                })
+                .WithDoHaveCreatingRtpEvent(s =>
+                {
+                    switch (s)
+                    {
+                        case "Tdx":
+                        case "Klarf":
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                });
 
             return cmmWrapper;
         }
@@ -118,9 +131,21 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             return this;
         }
 
+        public DummyCmmWrapper WithDoCreate(Func<string, string, bool> action)
+        {
+            DoCreateEvent += action;
+            return this;
+        }
+
         public DummyCmmWrapper WithOpenCreatingRtp(Action<string> action)
         {
             OpenCreatingRtpEvent += action;
+            return this;
+        }
+
+        public DummyCmmWrapper WithDoHaveCreatingRtpEvent(Func<string, bool> action)
+        {
+            DoHaveCreatingRtpEvent += action;
             return this;
         }
     }

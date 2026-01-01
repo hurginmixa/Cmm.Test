@@ -5,6 +5,6 @@ namespace CMM.Test.GUI.Wrappers
 {
     internal static class WrappersFabric 
     {
-        public static IWrappers MakeWrappers(Window mainWindow) => new DummyWrapperImplementations(mainWindow);
+        public static IWrappers MakeWrappers() => new DummyWrapperImplementations();
     }
 }
