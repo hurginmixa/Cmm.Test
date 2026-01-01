@@ -19,7 +19,7 @@ namespace CMM.Test.GUI
         {
             base.OnStartup(e);
 
-            IWrappers wrappers = WrappersFabric.MakeWrappers(MainWindow);
+            IWrappers wrappers = WrappersFabric.MakeWrappers();
 
             ICmmWrapper cmmWrapper = wrappers.GetCmmWrapper();
 

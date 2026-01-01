@@ -25,6 +25,7 @@ namespace CMM.Test.GUI.ViewModels
         private CmmFormatPropertyViewModel _selectedConverter;
         private bool _isResultLoaded;
         private bool _isReadyToCreate;
+        private bool _rtpEnabled;
         private string _converterListFilter;
 
         public CreatingTabViewModel(CreatingTabModel model, IFileSystemWrapper fileSystem)
@@ -36,6 +37,7 @@ namespace CMM.Test.GUI.ViewModels
             _converterNameList = new ObservableCollection<CmmFormatPropertyViewModel>(_allConverters);
 
             _selectedConverter = _allConverters.FirstOrDefault(c => c.Name == model.ConverterName);
+            _rtpEnabled = _selectedConverter?.DoHaveCreatingRTP ?? false;
 
             _isResultLoaded = false;
             _isReadyToCreate = false;
@@ -59,6 +61,7 @@ namespace CMM.Test.GUI.ViewModels
 
                     case nameof(SelectedConverter):
                         _model.ConverterName.Value = SelectedConverter?.Name ?? "";
+                        RtpEnabled = SelectedConverter?.DoHaveCreatingRTP ?? false;
                         CheckReadyToCreate();
                         break;
                         
@@ -99,6 +102,12 @@ namespace CMM.Test.GUI.ViewModels
         {
             get => _isReadyToCreate;
             private set => SetField(ref _isReadyToCreate, value);
+        }
+
+        public bool RtpEnabled
+        {
+            get => _rtpEnabled;
+            set => SetField(ref _rtpEnabled, value);
         }
 
         public string JobName
