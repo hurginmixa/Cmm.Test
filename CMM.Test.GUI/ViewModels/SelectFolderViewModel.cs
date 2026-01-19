@@ -18,16 +18,14 @@ namespace CMM.Test.GUI.ViewModels
         private string _selectedLot = string.Empty;
         private string _selectedWafer = string.Empty;
 
-        private readonly string _basePath;
         private readonly IFileSystemWrapper _fileSystem;
         private readonly SelectedFolderModel _model;
 
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public SelectFolderViewModel(string basePath, SelectedFolderModel model, IFileSystemWrapper fileSystem)
+        public SelectFolderViewModel(SelectedFolderModel model, IFileSystemWrapper fileSystem)
         {
-            _basePath = basePath;
             _model = model;
             _fileSystem = fileSystem;
 
@@ -155,7 +153,7 @@ namespace CMM.Test.GUI.ViewModels
         {
             Jobs.Clear();
 
-            Jobs.AddRange(GetJobList(_basePath, _fileSystem));
+            Jobs.AddRange(GetJobList(_fileSystem.BaseResultsPath, _fileSystem));
 
             OnPropertyChanged();
 
@@ -201,7 +199,7 @@ namespace CMM.Test.GUI.ViewModels
             }
             else
             {
-                string setupsPath = Path.Combine(_basePath, SelectedJob);
+                string setupsPath = Path.Combine(_fileSystem.BaseResultsPath, SelectedJob);
 
                 if (_fileSystem.DirectoryExists(setupsPath))
                 {
@@ -224,7 +222,7 @@ namespace CMM.Test.GUI.ViewModels
             }
             else
             {
-                string lotsPath = Path.Combine(_basePath, SelectedJob, SelectedSetup);
+                string lotsPath = Path.Combine(_fileSystem.BaseResultsPath, SelectedJob, SelectedSetup);
                 if (_fileSystem.DirectoryExists(lotsPath))
                 {
                     Lots.AddRange(_fileSystem.GetDirectories(lotsPath).Where(path => HasRequiredDepth(_fileSystem, path, 1)).Select(Path.GetFileName));
@@ -246,7 +244,7 @@ namespace CMM.Test.GUI.ViewModels
             }
             else
             {
-                string wafersPath = Path.Combine(_basePath, SelectedJob, SelectedSetup, SelectedLot);
+                string wafersPath = Path.Combine(_fileSystem.BaseResultsPath, SelectedJob, SelectedSetup, SelectedLot);
                 if (_fileSystem.DirectoryExists(wafersPath))
                 {
                     Wafers.AddRange(_fileSystem.GetDirectories(wafersPath).Select(Path.GetFileName));
@@ -264,7 +262,7 @@ namespace CMM.Test.GUI.ViewModels
                 string.IsNullOrEmpty(SelectedLot) || string.IsNullOrEmpty(SelectedWafer))
                 return string.Empty;
 
-            return Path.Combine(_basePath, SelectedJob, SelectedSetup, SelectedLot, SelectedWafer);
+            return Path.Combine(_fileSystem.BaseResultsPath, SelectedJob, SelectedSetup, SelectedLot, SelectedWafer);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

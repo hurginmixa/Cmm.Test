@@ -7,9 +7,9 @@ namespace CMM.Test.GUI.Tools
 {
     internal static class ToolsKid
     {
-        public static bool OpenCheckResultDialog(Window owner, string baseResultPath, SelectedFolderModel selectedFolderModel, IFileSystemWrapper fileSystem)
+        public static bool OpenCheckResultDialog(Window owner, SelectedFolderModel selectedFolderModel, IFileSystemWrapper fileSystem)
         {
-            var dialog = new SelectFolderView(baseResultPath, selectedFolderModel, fileSystem)
+            var dialog = new SelectFolderView(selectedFolderModel, fileSystem)
             {
                 Owner = owner
             };

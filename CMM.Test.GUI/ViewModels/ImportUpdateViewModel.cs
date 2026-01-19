@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -109,7 +110,23 @@ namespace CMM.Test.GUI.ViewModels
                 WaferId = ""
             };
 
-            if (!ToolsKid.OpenCheckResultDialog((Window) o, _fileSystem.BaseResultsPath, selectedFolderModel, _fileSystem))
+            if (!string.IsNullOrWhiteSpace(ResultPath))
+            {
+                var parts = ResultPath
+                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                    .Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+                // Требуется минимум 4 подпапки: ...\job\setup\lot\waferId
+                if (parts.Length >= 4)
+                {
+                    selectedFolderModel.WaferId = parts[parts.Length - 1];
+                    selectedFolderModel.Lot = parts[parts.Length - 2];
+                    selectedFolderModel.Setup = parts[parts.Length - 3];
+                    selectedFolderModel.Job = parts[parts.Length - 4];
+                }
+            }
+
+            if (!ToolsKid.OpenCheckResultDialog((Window) o, selectedFolderModel, _fileSystem))
             {
                 return;
             }
