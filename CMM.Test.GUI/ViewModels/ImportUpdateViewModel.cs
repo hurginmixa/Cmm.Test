@@ -36,7 +36,7 @@ namespace CMM.Test.GUI.ViewModels
             _importUpdateTabModel = importUpdateTabModel;
             _fileSystem = fileSystem;
 
-            LoadCommand = new RelayCommand(OnLoad);
+            LoadCommand = new RelayCommand(o => OnLoad(o), o => OnLoadPossible(o));
             UpdateCommand = new RelayCommand(OnUpdateCommand);
 
             SetResultPathCommand = new RelayCommand(OnCheckResult);
@@ -83,16 +83,20 @@ namespace CMM.Test.GUI.ViewModels
             SetStatus(eImportUpdateViewModelStatus.Start);
         }
 
+        private bool OnLoadPossible(object o)
+        {
+            string[] values = new[] { WaferId, LotId, DataInPath, WaferMapMask, SubmapId };
+
+            return values.All(v => !string.IsNullOrWhiteSpace(v)) && int.TryParse(SubmapId, out _);
+        }
+
         private void OnLoad(object o)
         {
-            if (_importUpdateTabModel.DoImport())
-            {
-                SetStatus(eImportUpdateViewModelStatus.Loaded);
-            }
-            else
-            {
-                SetStatus(eImportUpdateViewModelStatus.Start);
-            }
+            eImportUpdateViewModelStatus newStatus = _importUpdateTabModel.DoImport()
+                ? eImportUpdateViewModelStatus.Loaded
+                : eImportUpdateViewModelStatus.Start;
+
+            SetStatus(newStatus);
         }
 
         private void OnUpdateCommand(object o)
