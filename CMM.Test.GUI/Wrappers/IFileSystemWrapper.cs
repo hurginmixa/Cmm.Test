@@ -2,6 +2,8 @@
 {
     public interface IFileSystemWrapper
     {
+        string BaseResultsPath { get; }
+
         bool DirectoryExists(string basePath);
         
         string[] GetDirectories(string basePath);

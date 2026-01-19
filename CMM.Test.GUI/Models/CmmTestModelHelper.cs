@@ -81,7 +81,7 @@ namespace CMM.Test.GUI.Models
         /// <param name="cmmWrapper">ICmmWrapper instance</param>
         /// <param name="filePath">Path to INI file (if not specified, default file is used)</param>
         /// <returns>Filled CmmTestModel instance or null in case of error</returns>
-        public static CmmTestModel CreateFromIni(ICmmWrapper cmmWrapper)
+        public static CmmTestModel CreateFromIni(IWrappers wrappers)
         {
             string configPath = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), CONFIG_FILENAME);
 
@@ -89,13 +89,13 @@ namespace CMM.Test.GUI.Models
             {
                 // =================================================================================
                 // Create new model
-                CmmTestModel model = new CmmTestModel(cmmWrapper);
+                CmmTestModel model = new CmmTestModel(wrappers);
 
                 // Check if file exists
                 if (!File.Exists(configPath))
                 {
                     // If file doesn't exist, return model with default settings
-                    return new CmmTestModel(cmmWrapper);
+                    return new CmmTestModel(wrappers);
                 }
 
                 // Load CreatingTabModel properties

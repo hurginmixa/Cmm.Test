@@ -1,9 +1,9 @@
 ﻿namespace CMM.Test.GUI.Wrappers
 {
-    internal interface IWrappers
+    public interface IWrappers
     {
         ICmmWrapper GetCmmWrapper();
         
-        IFileSystemWrapper FileSystemWrapper();
+        IFileSystemWrapper GetFileSystemWrapper();
     }
 }

@@ -1,5 +1,5 @@
-﻿using System;
-using CMM.Test.GUI.Wrappers.DummyImplementations;
+﻿using CMM.Test.GUI.Wrappers.DummyImplementations;
+using CMM.Test.GUI.Wrappers.RealImplementations;
 
 namespace CMM.Test.GUI.Wrappers
 {
@@ -7,12 +7,9 @@ namespace CMM.Test.GUI.Wrappers
     {
         public static IWrappers MakeWrappers()
         {
-            if (!AppSettings.UseDummyWrappers)
-            {
-                throw new NotImplementedException("Real wrappers are not implemented yet.");
-            }
-
-            return new DummyWrapperImplementations();
+            return !AppSettings.UseDummyWrappers 
+                ? (IWrappers) new RealWrapperImplementation() 
+                : new DummyWrapperImplementations();
         }
     }
 }

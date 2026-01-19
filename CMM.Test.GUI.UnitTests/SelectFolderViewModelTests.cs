@@ -21,7 +21,7 @@ namespace CMM.Test.GUI.UnitTests
             {
                 string folderPath = temporaryFolder.FolderPath;
 
-                IFileSystemWrapper fileSystem = new FileSystemWrapper();
+                IFileSystemWrapper fileSystem = new RealFileSystemWrapper();
 
                 Assert.That(SelectFolderViewModel.GetJobList(folderPath, fileSystem).Any, Is.False);
 
