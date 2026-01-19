@@ -11,5 +11,7 @@ namespace CMM.Test.GUI.Wrappers
         bool DoCreate(string converterName, string resultPath);
 
         void OpenCreatingRtp(string converterName);
+
+        bool DoImport(string converterName, string sourcePath);
     }
 }

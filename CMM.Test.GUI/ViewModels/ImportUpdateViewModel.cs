@@ -84,7 +84,14 @@ namespace CMM.Test.GUI.ViewModels
 
         private void OnLoad(object o)
         {
-            SetStatus(eImportUpdateViewModelStatus.Loaded);
+            if (_importUpdateTabModel.DoImport())
+            {
+                SetStatus(eImportUpdateViewModelStatus.Loaded);
+            }
+            else
+            {
+                SetStatus(eImportUpdateViewModelStatus.Start);
+            }
         }
 
         private void OnUpdateCommand(object o)

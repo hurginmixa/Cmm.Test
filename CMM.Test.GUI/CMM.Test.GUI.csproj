@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -55,9 +56,11 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ApplicationDefinition>
     <Compile Include="Tools\ImportWaferMapKindHelper.cs" />
     <Compile Include="ViewModels\ImportWaferMapKindViewModel.cs" />
+    <Compile Include="AppSettings.cs" />
     <Compile Include="Wrappers\DummyImplementations\DummyWrapperImplementations.cs" />
     <Compile Include="Wrappers\IWrappers.cs" />
     <Compile Include="Wrappers\RealImplementations\CmmWrapper.cs" />
@@ -95,6 +98,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Wrappers\WrappersFabric.cs" />
     <Page Include="Views\CreatingMapControl.xaml">

@@ -57,17 +57,9 @@ namespace CMM.Test.GUI.Models
 
         public void DoCreate()
         {
-            try
+            if (!CmmWrapper.DoCreate(ConverterName, Path.Combine(CmmTestModel.BaseResultsPath, JobName, SetupName, Lot, WaferId)))
             {
-                if (!CmmWrapper.DoCreate(ConverterName, Path.Combine(CmmTestModel.BaseResultsPath, JobName, SetupName, Lot, WaferId)))
-                {
 
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
             }
         }
 
