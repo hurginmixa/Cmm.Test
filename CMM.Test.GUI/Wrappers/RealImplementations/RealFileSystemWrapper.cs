@@ -2,9 +2,9 @@ using System.IO;
 
 namespace CMM.Test.GUI.Wrappers.RealImplementations
 {
-    public class FileSystemWrapper : IFileSystemWrapper
+    public class RealFileSystemWrapper : IFileSystemWrapper
     {
-        public string BaseResultsPath => throw new System.NotImplementedException();
+        public string BaseResultsPath => @"c:\Falcon\ScanResult";
 
         public bool DirectoryExists(string basePath) => Directory.Exists(basePath);
 

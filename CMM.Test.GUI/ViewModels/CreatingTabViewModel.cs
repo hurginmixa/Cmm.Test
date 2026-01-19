@@ -198,7 +198,7 @@ namespace CMM.Test.GUI.ViewModels
                 WaferId = WaferId
             };
 
-            if (!ToolsKid.OpenCheckResultDialog((Window) o, _model.CmmTestModel.BaseResultsPath, selectedFolderModel, _fileSystem))
+            if (!ToolsKid.OpenCheckResultDialog((Window) o, _fileSystem.BaseResultsPath, selectedFolderModel, _fileSystem))
             {
                 return;
             }
@@ -230,7 +230,7 @@ namespace CMM.Test.GUI.ViewModels
 
         private string GetScanLogIniPath()
         {
-            return Path.Combine(_model.CmmTestModel.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
+            return Path.Combine(_fileSystem.BaseResultsPath, JobName, SetupName, LotName, WaferId, "ScanLog.ini");
         }
 
         private void FilterConverterList()

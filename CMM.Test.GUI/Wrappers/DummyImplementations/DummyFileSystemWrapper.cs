@@ -8,6 +8,8 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
 {
     public class DummyFileSystemWrapper : IFileSystemWrapper
     {
+        #region private class VirtualFileSystemNode
+
         // Вспомогательный класс для представления файлов и директорий
         private class VirtualFileSystemNode
         {
@@ -16,18 +18,22 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             public string Parent { get; set; }
         }
 
-        // Виртуальная файловая система
-        private readonly Dictionary<string, VirtualFileSystemNode> _fileSystem;
-        private readonly string _basePath;
+        #endregion
 
-        private DummyFileSystemWrapper(string basePath)
+        // Виртуальная файловая система
+        private const string BasePath = @"\\mixa7th\c$\Falcon\ScanResults";
+
+        private readonly Dictionary<string, VirtualFileSystemNode> _fileSystem;
+
+        private DummyFileSystemWrapper()
         {
-            _basePath = NormalizePath(basePath);
             _fileSystem = new Dictionary<string, VirtualFileSystemNode>(StringComparer.OrdinalIgnoreCase);
             
             // Создаем корневую директорию
-            _fileSystem[_basePath] = new VirtualFileSystemNode { IsDirectory = true, Name = _basePath };
+            _fileSystem[BasePath] = new VirtualFileSystemNode { IsDirectory = true, Name = BasePath };
         }
+
+        public string BaseResultsPath => BasePath;
 
         public bool DirectoryExists(string path)
         {
@@ -56,7 +62,7 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
         }
 
         // Методы для настройки виртуальной файловой системы
-        public DummyFileSystemWrapper AddDirectory(string path)
+        private DummyFileSystemWrapper AddDirectory(string path)
         {
             path = NormalizePath(path);
             string parentPath = Path.GetDirectoryName(path);
@@ -75,7 +81,7 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             return this;
         }
 
-        public DummyFileSystemWrapper AddFile(string filePath)
+        private DummyFileSystemWrapper AddFile(string filePath)
         {
             filePath = NormalizePath(filePath);
             string parentPath = Path.GetDirectoryName(filePath);
@@ -96,7 +102,7 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
 
         private void EnsureParentDirectoriesExist(string path)
         {
-            if (string.IsNullOrEmpty(path) || path == _basePath || _fileSystem.ContainsKey(path))
+            if (string.IsNullOrEmpty(path) || path == BasePath || _fileSystem.ContainsKey(path))
                 return;
                 
             string parentPath = Path.GetDirectoryName(path);
@@ -110,7 +116,7 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             };
         }
 
-        private string NormalizePath(string path)
+        private static string NormalizePath(string path)
         {
             return Path.GetFullPath(path).TrimEnd('\\', '/');
         }
@@ -118,20 +124,18 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
         // Статический метод для создания тестовой файловой системы
         public static DummyFileSystemWrapper CreateTestFileSystem()
         {
-            string basePath = CmmTestModel.FalconScanResultsPath;
-
-            return new DummyFileSystemWrapper(basePath)
-                .AddDirectory(Path.Combine(basePath, "Job1"))
-                .AddDirectory(Path.Combine(basePath, "Job1", "Setup1"))
-                .AddDirectory(Path.Combine(basePath, "Job1", "Setup1", "Lot1"))
-                .AddDirectory(Path.Combine(basePath, "Job1", "Setup1", "Lot1", "Wafer1"))
-                .AddFile(Path.Combine(basePath, "Job1", "Setup1", "Lot1", "Wafer1", "ScanLog.ini"))
-                .AddDirectory(Path.Combine(basePath, "Job1", "Setup1", "Lot1", "Wafer2"))
-                .AddFile(Path.Combine(basePath, "Job1", "Setup1", "Lot1", "Wafer2", "ScanLog.ini"))
+            return new DummyFileSystemWrapper()
+                .AddDirectory(Path.Combine(BasePath, "Job1"))
+                .AddDirectory(Path.Combine(BasePath, "Job1", "Setup1"))
+                .AddDirectory(Path.Combine(BasePath, "Job1", "Setup1", "Lot1"))
+                .AddDirectory(Path.Combine(BasePath, "Job1", "Setup1", "Lot1", "Wafer1"))
+                .AddFile(Path.Combine(BasePath, "Job1", "Setup1", "Lot1", "Wafer1", "ScanLog.ini"))
+                .AddDirectory(Path.Combine(BasePath, "Job1", "Setup1", "Lot1", "Wafer2"))
+                .AddFile(Path.Combine(BasePath, "Job1", "Setup1", "Lot1", "Wafer2", "ScanLog.ini"))
  
-                .AddDirectory(Path.Combine(basePath, "Job2"))
-                .AddDirectory(Path.Combine(basePath, "Job2", "Setup2"))
-                .AddFile(Path.Combine(basePath, "Job2", "Setup2", "config.txt"));
+                .AddDirectory(Path.Combine(BasePath, "Job2"))
+                .AddDirectory(Path.Combine(BasePath, "Job2", "Setup2"))
+                .AddFile(Path.Combine(BasePath, "Job2", "Setup2", "config.txt"));
         }
     }
 }

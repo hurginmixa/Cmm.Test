@@ -4,12 +4,8 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
 {
     internal class DummyWrapperImplementations : IWrappers
     {
-        public DummyWrapperImplementations()
-        {
-        }
+        public ICmmWrapper CmmWrapper => DummyCmmWrapper.CreateTestCmmWrapper();
 
-        public ICmmWrapper GetCmmWrapper() => DummyCmmWrapper.CreateTestCmmWrapper();
-
-        public IFileSystemWrapper FileSystemWrapper() => DummyFileSystemWrapper.CreateTestFileSystem();
+        public IFileSystemWrapper GetFileSystemWrapper() => DummyFileSystemWrapper.CreateTestFileSystem();
     }
 }

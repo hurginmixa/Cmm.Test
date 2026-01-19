@@ -6,10 +6,10 @@ namespace CMM.Test.GUI.Models
 {
     public class ImportUpdateTabModel
     {
-        public ImportUpdateTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper)
+        public ImportUpdateTabModel(CmmTestModel cmmTestModel, IWrappers wrapper)
         {
             CmmTestModel = cmmTestModel;
-            CmmWrapper = cmmWrapper;
+            CmmWrapper = wrapper.GetCmmWrapper();
             ResultPath = "";
             UsingResultPath = false;
             LotId = "";

@@ -2,7 +2,7 @@
 
 namespace CMM.Test.GUI.Wrappers.RealImplementations
 {
-    internal class CmmWrapper : ICmmWrapper
+    internal class RealCmmWrapper : ICmmWrapper
     {
         public IEnumerable<ICmmFormatProperty> CreatingConverters => throw new System.NotImplementedException();
 

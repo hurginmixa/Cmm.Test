@@ -7,19 +7,15 @@ namespace CMM.Test.GUI.Models
 {
     public class CmmTestModel
     {
-        public const string FalconScanResultsPath = @"\\mixa7th\c$\Falcon\ScanResults";
-
-        public CmmTestModel(ICmmWrapper cmmWrapper)
+        public CmmTestModel(IWrappers wrapper)
         {
-            CreatingTabModel = new CreatingTabModel(this, cmmWrapper);
+            CreatingTabModel = new CreatingTabModel(this, wrapper);
 
-            ImportUpdateTabModel = new ImportUpdateTabModel(this, cmmWrapper);
+            ImportUpdateTabModel = new ImportUpdateTabModel(this, wrapper);
         }
 
         public CreatingTabModel CreatingTabModel { get; }
 
         public ImportUpdateTabModel ImportUpdateTabModel { get; }
-
-        public string BaseResultsPath { get; } = FalconScanResultsPath;
     }
 }

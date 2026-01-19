@@ -9,10 +9,11 @@ namespace CMM.Test.GUI.Models
 {
     public class CreatingTabModel
     {
-        public CreatingTabModel(CmmTestModel cmmTestModel, ICmmWrapper cmmWrapper)
+        public CreatingTabModel(CmmTestModel cmmTestModel, IWrappers wrappers)
         {
             CmmTestModel = cmmTestModel;
-            CmmWrapper = cmmWrapper;
+            Wrappers = wrappers;
+            CmmWrapper = wrappers.GetCmmWrapper();
 
             JobName = "";
             SetupName = "";
@@ -29,7 +30,8 @@ namespace CMM.Test.GUI.Models
             ExportFlatPosition = eExportFlatPosition.Botom;
         }
 
-        public CmmTestModel CmmTestModel { get; }
+        private CmmTestModel CmmTestModel { get; }
+        public IWrappers Wrappers { get; }
 
         public ICmmWrapper CmmWrapper { get; }
 
@@ -57,7 +59,7 @@ namespace CMM.Test.GUI.Models
 
         public void DoCreate()
         {
-            if (!CmmWrapper.DoCreate(ConverterName, Path.Combine(CmmTestModel.BaseResultsPath, JobName, SetupName, Lot, WaferId)))
+            if (!CmmWrapper.DoCreate(ConverterName, Path.Combine(Wrappers.GetFileSystemWrapper().BaseResultsPath, JobName, SetupName, Lot, WaferId)))
             {
 
             }

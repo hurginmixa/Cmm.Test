@@ -109,7 +109,7 @@ namespace CMM.Test.GUI.ViewModels
                 WaferId = ""
             };
 
-            if (!ToolsKid.OpenCheckResultDialog((Window) o, _importUpdateTabModel.CmmTestModel.BaseResultsPath, selectedFolderModel, _fileSystem))
+            if (!ToolsKid.OpenCheckResultDialog((Window) o, _fileSystem.BaseResultsPath, selectedFolderModel, _fileSystem))
             {
                 return;
             }

@@ -63,11 +63,11 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="Wrappers\DummyImplementations\DummyWrapperImplementations.cs" />
     <Compile Include="Wrappers\IWrappers.cs" />
-    <Compile Include="Wrappers\RealImplementations\CmmWrapper.cs" />
+    <Compile Include="Wrappers\RealImplementations\RealCmmWrapper.cs" />
     <Compile Include="Wrappers\DummyImplementations\DummyFileSystemWrapper.cs" />
     <Compile Include="Wrappers\DummyImplementations\DummyCmmFormatProperty.cs" />
     <Compile Include="Wrappers\DummyImplementations\DummyCmmWrapper.cs" />
-    <Compile Include="Wrappers\RealImplementations\FileSystemWrapper.cs" />
+    <Compile Include="Wrappers\RealImplementations\RealFileSystemWrapper.cs" />
     <Compile Include="Wrappers\IFileSystemWrapper.cs" />
     <Compile Include="Wrappers\ICmmFormatProperty.cs" />
     <Compile Include="Wrappers\ICmmWrapper.cs" />
@@ -100,6 +100,7 @@
       <SubType>Code</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Wrappers\RealImplementations\RealWrapperImplementation.cs" />
     <Compile Include="Wrappers\WrappersFabric.cs" />
     <Page Include="Views\CreatingMapControl.xaml">
       <Generator>MSBuild:Compile</Generator>
