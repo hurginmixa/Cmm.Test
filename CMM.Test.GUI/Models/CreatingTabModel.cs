@@ -13,7 +13,7 @@ namespace CMM.Test.GUI.Models
         {
             CmmTestModel = cmmTestModel;
             Wrappers = wrappers;
-            CmmWrapper = wrappers.GetCmmWrapper();
+            CmmWrapper = wrappers.CmmWrapper;
 
             JobName = "";
             SetupName = "";
@@ -59,7 +59,7 @@ namespace CMM.Test.GUI.Models
 
         public void DoCreate()
         {
-            if (!CmmWrapper.DoCreate(ConverterName, Path.Combine(Wrappers.GetFileSystemWrapper().BaseResultsPath, JobName, SetupName, Lot, WaferId)))
+            if (!CmmWrapper.DoCreate(ConverterName, Path.Combine(Wrappers.FileSystemWrapper.BaseResultsPath, JobName, SetupName, Lot, WaferId)))
             {
 
             }

@@ -26,7 +26,7 @@ namespace CMM.Test.GUI
 
             IWrappers wrappers = WrappersFabric.MakeWrappers();
 
-            IFileSystemWrapper fileSystem = wrappers.GetFileSystemWrapper();
+            IFileSystemWrapper fileSystem = wrappers.FileSystemWrapper;
 
             _cmmTestModel = CmmTestModelHelper.CreateFromIni(wrappers);
 

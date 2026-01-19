@@ -2,8 +2,8 @@
 {
     public interface IWrappers
     {
-        ICmmWrapper GetCmmWrapper();
-        
-        IFileSystemWrapper GetFileSystemWrapper();
+        ICmmWrapper CmmWrapper { get; }
+
+        IFileSystemWrapper FileSystemWrapper { get; }
     }
 }

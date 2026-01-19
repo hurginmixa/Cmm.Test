@@ -6,6 +6,6 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
     {
         public ICmmWrapper CmmWrapper => DummyCmmWrapper.CreateTestCmmWrapper();
 
-        public IFileSystemWrapper GetFileSystemWrapper() => DummyFileSystemWrapper.CreateTestFileSystem();
+        public IFileSystemWrapper FileSystemWrapper => DummyFileSystemWrapper.CreateTestFileSystem();
     }
 }

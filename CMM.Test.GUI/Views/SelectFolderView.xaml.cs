@@ -10,11 +10,11 @@ namespace CMM.Test.GUI.Views
     /// </summary>
     public partial class SelectFolderView : Window
     {
-        public SelectFolderView(string basePath, SelectedFolderModel model, IFileSystemWrapper fileSystem)
+        public SelectFolderView(SelectedFolderModel model, IFileSystemWrapper fileSystem)
         {
             InitializeComponent();
 
-            this.DataContext = new  SelectFolderViewModel(basePath, model, fileSystem);
+            this.DataContext = new  SelectFolderViewModel(model, fileSystem);
         }
     }
 }

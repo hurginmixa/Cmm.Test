@@ -2,8 +2,8 @@
 {
     internal class RealWrapperImplementation: IWrappers
     {
-        public ICmmWrapper GetCmmWrapper() => new RealCmmWrapper();
+        public ICmmWrapper CmmWrapper => new RealCmmWrapper();
 
-        public IFileSystemWrapper GetFileSystemWrapper() => new RealFileSystemWrapper();
+        public IFileSystemWrapper FileSystemWrapper => new RealFileSystemWrapper();
     }
 }
