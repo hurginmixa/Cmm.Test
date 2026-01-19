@@ -51,5 +51,7 @@ namespace CMM.Test.GUI.Models
         public CmmTestModel CmmTestModel { get; }
         
         public ICmmWrapper CmmWrapper { get; }
+
+        public bool DoImport() => CmmWrapper.DoImport(SelectedConverterName, DataInPath);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using static System.Resources.ResXFileRef;
 
 namespace CMM.Test.GUI.Wrappers.DummyImplementations
 {
@@ -9,6 +10,7 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
         public event Func<IEnumerable<ICmmFormatProperty>> OnGetCreateConvertersEvent;
         public event Func<IEnumerable<ICmmFormatProperty>> OnGetImportUpdateConvertersEvent;
         public event Func<string, string, bool> DoCreateEvent;
+        public event Func<string, string, bool> DoImportEvent;
         public event Action<string> OpenCreatingRtpEvent;
         public event Func<string, bool> DoHaveCreatingRtpEvent;
 
@@ -31,26 +33,28 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
                 .WithGetImportUpdateConverters(formatProperties)
                 .WithDoCreate((converter, resultPath) =>
                 {
+                    bool result = false;
+
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         if (Application.Current.MainWindow != null)
                         {
-                            MessageBox.Show(Application.Current.MainWindow, $" Creating {converter} on result {resultPath}");
+                            result = MessageBox.Show(Application.Current.MainWindow, $" Creating {converter} on result {resultPath}", "Creating", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
                         }
                     });
 
-                    return true;
+                    return result;
                 })
-                .WithOpenCreatingRtp(s =>
+                .WithOpenCreatingRtp(formatName =>
                 {
                     if (Application.Current.MainWindow != null)
                     {
-                        MessageBox.Show(Application.Current.MainWindow, $" Creating Rrp {s}");
+                        MessageBox.Show(Application.Current.MainWindow, $" Creating Rrp {formatName}");
                     }
                 })
-                .WithDoHaveCreatingRtpEvent(s =>
+                .WithDoHaveCreatingRtpEvent(formatName =>
                 {
-                    switch (s)
+                    switch (formatName)
                     {
                         case "Tdx":
                         case "Klarf":
@@ -60,6 +64,20 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
                     }
 
                     return false;
+                })
+                .WithDoImport((converter, importPath) =>
+                {
+                    bool result = false;
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        if (Application.Current.MainWindow != null)
+                        {
+                            result = MessageBox.Show(Application.Current.MainWindow, $" Import {converter} on result {importPath}", "Import", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+                        }
+                    });
+
+                    return result;
                 });
 
             return cmmWrapper;
@@ -100,6 +118,16 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             }
         }
 
+        public bool DoImport(string converterName, string sourcePath)
+        {
+            if (DoImportEvent != null)
+            {
+                return DoImportEvent(converterName, sourcePath);
+            }
+
+            throw new Exception($"Property {nameof(DoImportEvent)} was not defined");
+        }
+
         public IEnumerable<ICmmFormatProperty> ImportUpdateConverters
         {
             get
@@ -125,12 +153,6 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
             return this;
         }
 
-        public DummyCmmWrapper WithDoCreate(bool creatingResult)
-        {
-            DoCreateEvent += (s, r) => creatingResult;
-            return this;
-        }
-
         public DummyCmmWrapper WithDoCreate(Func<string, string, bool> action)
         {
             DoCreateEvent += action;
@@ -146,6 +168,12 @@ namespace CMM.Test.GUI.Wrappers.DummyImplementations
         public DummyCmmWrapper WithDoHaveCreatingRtpEvent(Func<string, bool> action)
         {
             DoHaveCreatingRtpEvent += action;
+            return this;
+        }
+
+        public DummyCmmWrapper WithDoImport(Func<string, string, bool> action)
+        {
+            DoImportEvent += action;
             return this;
         }
     }
